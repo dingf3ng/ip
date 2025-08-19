@@ -18,7 +18,12 @@ public class TaskListMessage implements Sendable {
         StringBuilder sb = new StringBuilder();
         sb.append("Here are the tasks in your list:");
         for (int i = 0; i < tasks.length; i++) {
-            sb.append("\n     ").append((i + 1)).append(".").append(tasks[i].getStatusIcon()).append(" ").append(tasks[i].getDescription());
+            sb.append("\n     ")
+                    .append((i + 1))
+                        .append(".")
+                            .append(tasks[i].getStatusIcon())
+                                .append(" ")
+                                    .append(tasks[i].getDescription());
         }
         return sb.toString();
     }
