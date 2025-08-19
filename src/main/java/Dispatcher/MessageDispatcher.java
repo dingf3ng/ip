@@ -5,11 +5,9 @@ import ChatMessage.GoodByeMessage;
 import ChatMessage.GreetingMessage;
 import ChatMessage.AddedTaskMessage;
 import ChatMessage.TaskListMessage;
-import ChatMessage.Readable;
 import CliTool.*;
-import Interaction.InitialInteraction;
-import Interaction.Interactable;
 import TaskManager.TaskManager;
+import Task.Task;
 
 public class MessageDispatcher {
     private TaskManager taskManager;
@@ -38,17 +36,14 @@ public class MessageDispatcher {
 
     public void addTask(String taskName) {
         taskManager.addTask(taskName);
-        sendOut(new AddedTaskMessage(taskName));
+        Task[] tasks = taskManager.getTasks();
+        Task addedTask = tasks[tasks.length - 1];
+        sendOut(new AddedTaskMessage(addedTask));
     }
 
     public void listTasks() {
-        String[] tasks = taskManager.getTasks();
+        Task[] tasks = taskManager.getTasks();
         sendOut(new TaskListMessage(tasks));
-    }
-
-    public Interactable process(Readable message) {
-        //TODO: Dummy implementation
-        return new InitialInteraction();
     }
 
 }

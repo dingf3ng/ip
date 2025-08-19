@@ -1,14 +1,16 @@
 package ChatMessage;
 
-public class AddedTaskMessage implements Sendable {
-    private final String taskName;
+import Task.Task;
 
-    public AddedTaskMessage(String taskName) {
-        this.taskName = taskName;
+public class AddedTaskMessage implements Sendable {
+    private final Task task;
+
+    public AddedTaskMessage(Task task) {
+        this.task = task;
     }
 
     @Override
     public String getMessageContent() {
-        return "added: " + taskName;
+        return "added: " + task.getDescription();
     }
 }

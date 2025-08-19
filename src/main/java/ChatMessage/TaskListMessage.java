@@ -1,9 +1,11 @@
 package ChatMessage;
 
-public class TaskListMessage implements Sendable {
-    private final String[] tasks;
+import Task.Task;
 
-    public TaskListMessage(String[] tasks) {
+public class TaskListMessage implements Sendable {
+    private final Task[] tasks;
+
+    public TaskListMessage(Task[] tasks) {
         this.tasks = tasks;
     }
 
@@ -15,7 +17,7 @@ public class TaskListMessage implements Sendable {
         
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < tasks.length; i++) {
-            sb.append((i + 1)).append(". ").append(tasks[i]);
+            sb.append((i + 1)).append(". ").append(tasks[i].getDescription());
             if (i < tasks.length - 1) {
                 sb.append("\n     ");
             }
