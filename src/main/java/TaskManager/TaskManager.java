@@ -1,55 +1,53 @@
 package TaskManager;
 
 import Task.Task;
+import java.util.ArrayList;
 
 public class TaskManager {
-    private static final int MAX_TASKS = 100;
-    private Task[] tasks;
-    private int taskCount;
+    private ArrayList<Task> tasks;
 
     public TaskManager() {
-        this.tasks = new Task[MAX_TASKS];
-        this.taskCount = 0;
+        this.tasks = new ArrayList<Task>();
     }
 
     public void addTask(Task task) {
-        if (taskCount < MAX_TASKS) {
-            tasks[taskCount] = task;
-            taskCount++;
-        }
+        tasks.add(task);
     }
 
     public Task[] getTasks() {
-        Task[] result = new Task[taskCount];
-        for (int i = 0; i < taskCount; i++) {
-            result[i] = tasks[i];
-        }
-        return result;
+        return tasks.toArray(new Task[0]);
     }
 
     public int getTaskCount() {
-        return taskCount;
+        return tasks.size();
     }
 
     public Task markTask(int index) {
-        if (index >= 0 && index < taskCount) {
-            tasks[index].markAsDone();
-            return tasks[index];
+        if (index >= 0 && index < tasks.size()) {
+            tasks.get(index).markAsDone();
+            return tasks.get(index);
         }
         return null;
     }
 
     public Task unmarkTask(int index) {
-        if (index >= 0 && index < taskCount) {
-            tasks[index].markAsNotDone();
-            return tasks[index];
+        if (index >= 0 && index < tasks.size()) {
+            tasks.get(index).markAsNotDone();
+            return tasks.get(index);
         }
         return null;
     }
 
     public Task getTask(int index) {
-        if (index >= 0 && index < taskCount) {
-            return tasks[index];
+        if (index >= 0 && index < tasks.size()) {
+            return tasks.get(index);
+        }
+        return null;
+    }
+
+    public Task deleteTask(int index) {
+        if (index >= 0 && index < tasks.size()) {
+            return tasks.remove(index);
         }
         return null;
     }

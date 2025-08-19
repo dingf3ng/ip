@@ -69,6 +69,19 @@ public class Winnie {
                     } catch (NumberFormatException e) {
                         throw new WinnieException("Task number must be a valid number. You entered: " + numberStr);
                     }
+                } else if (command.equals("delete")) {
+                    throw new WinnieException("Please specify which task number to delete. Example: delete 1");
+                } else if (command.startsWith("delete ")) {
+                    String numberStr = command.substring(7).trim();
+                    if (numberStr.isEmpty()) {
+                        throw new WinnieException("Please specify which task number to delete. Example: delete 1");
+                    }
+                    try {
+                        int taskNumber = Integer.parseInt(numberStr);
+                        messageDispatcher.deleteTask(taskNumber);
+                    } catch (NumberFormatException e) {
+                        throw new WinnieException("Task number must be a valid number. You entered: " + numberStr);
+                    }
                 } else if (command.equals("todo")) {
                     throw new WinnieException("The description of a todo cannot be empty.");
                 } else if (command.startsWith("todo ")) {

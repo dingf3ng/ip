@@ -7,6 +7,7 @@ import ChatMessage.TaskAddedMessage;
 import ChatMessage.TaskListMessage;
 import ChatMessage.MarkTaskMessage;
 import ChatMessage.UnmarkTaskMessage;
+import ChatMessage.DeleteTaskMessage;
 import ChatMessage.ErrorMessage;
 import CliTool.*;
 import TaskManager.TaskManager;
@@ -95,6 +96,14 @@ public class MessageDispatcher {
         }
         Task unmarkedTask = taskManager.unmarkTask(taskNumber - 1);
         sendOut(new UnmarkTaskMessage(unmarkedTask));
+    }
+
+    public void deleteTask(int taskNumber) throws WinnieException {
+        if (taskNumber < 1 || taskNumber > taskManager.getTaskCount()) {
+            throw new InvalidTaskNumberException(String.valueOf(taskNumber), taskManager.getTaskCount());
+        }
+        Task deletedTask = taskManager.deleteTask(taskNumber - 1);
+        sendOut(new DeleteTaskMessage(deletedTask, taskManager.getTaskCount()));
     }
 
     public void handleError(WinnieException e) {
