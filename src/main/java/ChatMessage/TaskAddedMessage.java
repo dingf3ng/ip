@@ -14,6 +14,6 @@ public class TaskAddedMessage implements Sendable {
     @Override
     public String getMessageContent() {
         return "Got it. I've added this task:\n     " + task.toString() + 
-               "\nNow you have " + taskCount + " tasks in the list.";
+               "\n     Now you have " + taskCount + " tasks in the list.";
     }
 }

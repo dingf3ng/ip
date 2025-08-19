@@ -1,9 +1,12 @@
 package ChatMessage;
 
-public class GreetingMessage extends ToSendMessage {
+public class GreetingMessage implements Sendable {
 
-    public GreetingMessage() {
-        super("Hello! I'm " + Utils.BOT_NAME + "\n     What can I do for you?");
+    private static final String GREETING = "Hello! I'm " + Utils.BOT_NAME + 
+            "\n     What can I do for you?";
+
+    @Override
+    public String getMessageContent() {
+        return GREETING;
     }
-
 }
