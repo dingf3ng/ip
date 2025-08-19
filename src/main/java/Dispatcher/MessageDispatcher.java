@@ -3,7 +3,7 @@ package Dispatcher;
 import ChatMessage.Sendable;
 import ChatMessage.GoodByeMessage;
 import ChatMessage.GreetingMessage;
-import ChatMessage.AddedTaskMessage;
+import ChatMessage.TaskAddedMessage;
 import ChatMessage.TaskListMessage;
 import ChatMessage.MarkTaskMessage;
 import ChatMessage.UnmarkTaskMessage;
@@ -11,6 +11,9 @@ import ChatMessage.ToSendMessage;
 import CliTool.*;
 import TaskManager.TaskManager;
 import Task.Task;
+import Task.Todo;
+import Task.Deadline;
+import Task.Event;
 
 public class MessageDispatcher {
     private TaskManager taskManager;
@@ -37,11 +40,22 @@ public class MessageDispatcher {
         sendOut(new GoodByeMessage());
     }
 
-    public void addTask(String taskName) {
-        taskManager.addTask(taskName);
-        Task[] tasks = taskManager.getTasks();
-        Task addedTask = tasks[tasks.length - 1];
-        sendOut(new AddedTaskMessage(addedTask));
+    public void addTodo(String description) {
+        Todo todo = new Todo(description);
+        taskManager.addTask(todo);
+        sendOut(new TaskAddedMessage(todo, taskManager.getTaskCount()));
+    }
+
+    public void addDeadline(String description, String by) {
+        Deadline deadline = new Deadline(description, by);
+        taskManager.addTask(deadline);
+        sendOut(new TaskAddedMessage(deadline, taskManager.getTaskCount()));
+    }
+
+    public void addEvent(String description, String from, String to) {
+        Event event = new Event(description, from, to);
+        taskManager.addTask(event);
+        sendOut(new TaskAddedMessage(event, taskManager.getTaskCount()));
     }
 
     public void listTasks() {

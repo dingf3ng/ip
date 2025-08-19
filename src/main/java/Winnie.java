@@ -46,17 +46,41 @@ public class Winnie {
                     int taskNumber = Integer.parseInt(command.substring(5).trim());
                     messageDispatcher.markTask(taskNumber);
                 } catch (NumberFormatException e) {
-                    messageDispatcher.addTask(command);
+                    messageDispatcher.addTodo(command);
                 }
             } else if (command.startsWith("unmark ")) {
                 try {
                     int taskNumber = Integer.parseInt(command.substring(7).trim());
                     messageDispatcher.unmarkTask(taskNumber);
                 } catch (NumberFormatException e) {
-                    messageDispatcher.addTask(command);
+                    messageDispatcher.addTodo(command);
+                }
+            } else if (command.startsWith("todo ")) {
+                String description = command.substring(5).trim();
+                messageDispatcher.addTodo(description);
+            } else if (command.startsWith("deadline ")) {
+                String rest = command.substring(9).trim();
+                String[] parts = rest.split(" /by ", 2);
+                if (parts.length == 2) {
+                    messageDispatcher.addDeadline(parts[0].trim(), parts[1].trim());
+                } else {
+                    messageDispatcher.addTodo(command);
+                }
+            } else if (command.startsWith("event ")) {
+                String rest = command.substring(6).trim();
+                String[] parts = rest.split(" /from ", 2);
+                if (parts.length == 2) {
+                    String[] timeParts = parts[1].split(" /to ", 2);
+                    if (timeParts.length == 2) {
+                        messageDispatcher.addEvent(parts[0].trim(), timeParts[0].trim(), timeParts[1].trim());
+                    } else {
+                        messageDispatcher.addTodo(command);
+                    }
+                } else {
+                    messageDispatcher.addTodo(command);
                 }
             } else {
-                messageDispatcher.addTask(command);
+                messageDispatcher.addTodo(command);
             }
         }
     }

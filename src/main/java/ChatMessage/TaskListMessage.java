@@ -21,9 +21,7 @@ public class TaskListMessage implements Sendable {
             sb.append("\n     ")
                     .append((i + 1))
                         .append(".")
-                            .append(tasks[i].getStatusIcon())
-                                .append(" ")
-                                    .append(tasks[i].getDescription());
+                            .append(tasks[i].toString());
         }
         return sb.toString();
     }
