@@ -1,7 +1,6 @@
 import Dispatcher.MessageDispatcher;
 import CliTool.CliReader;
 import ChatMessage.ReceivedMessage;
-import ChatMessage.ToSendMessage;
 
 public class Winnie {
     
@@ -40,8 +39,10 @@ public class Winnie {
             if (command.equals("bye")) {
                 messageDispatcher.sayGoodbye();
                 break;
+            } else if (command.equals("list")) {
+                messageDispatcher.listTasks();
             } else {
-                messageDispatcher.sendOut(new ToSendMessage(command));
+                messageDispatcher.addTask(command);
             }
         }
     }
