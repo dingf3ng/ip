@@ -20,13 +20,12 @@ public class MessageDispatcher {
     }
 
     public void sayGreeting() {
+        //printSplitLine();
         sendOut(new GreetingMessage());
-        printSplitLine();
     }
 
     public void sayGoodbye() {
         sendOut(new GoodByeMessage());
-        printSplitLine();
     }
 
     public Interactable process(Readable message) {

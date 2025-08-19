@@ -1,4 +1,7 @@
 import Dispatcher.MessageDispatcher;
+import CliTool.CliReader;
+import ChatMessage.ReceivedMessage;
+import ChatMessage.ToSendMessage;
 
 public class Winnie {
     
@@ -28,6 +31,18 @@ public class Winnie {
         System.out.println("Hello from\n" + logo);
         MessageDispatcher messageDispatcher = new MessageDispatcher();
         messageDispatcher.sayGreeting();
-        messageDispatcher.sayGoodbye();
+        
+        CliReader reader = new CliReader();
+        while (true) {
+            ReceivedMessage userInput = reader.read();
+            String command = userInput.getMessageContent().trim();
+            
+            if (command.equals("bye")) {
+                messageDispatcher.sayGoodbye();
+                break;
+            } else {
+                messageDispatcher.sendOut(new ToSendMessage(command));
+            }
+        }
     }
 }
