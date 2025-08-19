@@ -30,4 +30,27 @@ public class TaskManager {
     public int getTaskCount() {
         return taskCount;
     }
+
+    public Task markTask(int index) {
+        if (index >= 0 && index < taskCount) {
+            tasks[index].markAsDone();
+            return tasks[index];
+        }
+        return null;
+    }
+
+    public Task unmarkTask(int index) {
+        if (index >= 0 && index < taskCount) {
+            tasks[index].markAsNotDone();
+            return tasks[index];
+        }
+        return null;
+    }
+
+    public Task getTask(int index) {
+        if (index >= 0 && index < taskCount) {
+            return tasks[index];
+        }
+        return null;
+    }
 }

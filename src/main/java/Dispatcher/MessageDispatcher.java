@@ -5,6 +5,9 @@ import ChatMessage.GoodByeMessage;
 import ChatMessage.GreetingMessage;
 import ChatMessage.AddedTaskMessage;
 import ChatMessage.TaskListMessage;
+import ChatMessage.MarkTaskMessage;
+import ChatMessage.UnmarkTaskMessage;
+import ChatMessage.ToSendMessage;
 import CliTool.*;
 import TaskManager.TaskManager;
 import Task.Task;
@@ -44,6 +47,24 @@ public class MessageDispatcher {
     public void listTasks() {
         Task[] tasks = taskManager.getTasks();
         sendOut(new TaskListMessage(tasks));
+    }
+
+    public void markTask(int taskNumber) {
+        Task markedTask = taskManager.markTask(taskNumber - 1);
+        if (markedTask != null) {
+            sendOut(new MarkTaskMessage(markedTask));
+        } else {
+            sendOut(new ToSendMessage("Invalid task number."));
+        }
+    }
+
+    public void unmarkTask(int taskNumber) {
+        Task unmarkedTask = taskManager.unmarkTask(taskNumber - 1);
+        if (unmarkedTask != null) {
+            sendOut(new UnmarkTaskMessage(unmarkedTask));
+        } else {
+            sendOut(new ToSendMessage("Invalid task number."));
+        }
     }
 
 }

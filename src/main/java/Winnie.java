@@ -41,6 +41,20 @@ public class Winnie {
                 break;
             } else if (command.equals("list")) {
                 messageDispatcher.listTasks();
+            } else if (command.startsWith("mark ")) {
+                try {
+                    int taskNumber = Integer.parseInt(command.substring(5).trim());
+                    messageDispatcher.markTask(taskNumber);
+                } catch (NumberFormatException e) {
+                    messageDispatcher.addTask(command);
+                }
+            } else if (command.startsWith("unmark ")) {
+                try {
+                    int taskNumber = Integer.parseInt(command.substring(7).trim());
+                    messageDispatcher.unmarkTask(taskNumber);
+                } catch (NumberFormatException e) {
+                    messageDispatcher.addTask(command);
+                }
             } else {
                 messageDispatcher.addTask(command);
             }
