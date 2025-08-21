@@ -26,17 +26,12 @@ public class MessageDispatcher {
         this.taskManager = new TaskManager();
     }
 
-    public void sendOut(Sendable message) {
+    private void sendOut(Sendable message) {
         CliWriter cliWriter = new CliWriter();
         cliWriter.write(message);
     }
 
-    private void printSplitLine() {
-        System.out.println("\n--------------------------------------------------");
-    }
-
     public void sayGreeting() {
-        //printSplitLine();
         sendOut(new GreetingMessage());
     }
 

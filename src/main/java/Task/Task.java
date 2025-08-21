@@ -3,10 +3,12 @@ package Task;
 public abstract class Task {
     protected String description;
     protected boolean isDone;
+    protected TaskType taskType;
 
-    public Task(String description) {
+    public Task(String description, TaskType taskType) {
         this.description = description;
         this.isDone = false;
+        this.taskType = taskType;
     }
 
     public String getDescription() {
@@ -29,7 +31,13 @@ public abstract class Task {
         return (isDone ? "[X]" : "[ ]");
     }
 
-    public abstract String getTypeIcon();
+    public String getTypeIcon() {
+        return taskType.getIcon();
+    }
+
+    public TaskType getTaskType() {
+        return taskType;
+    }
 
     @Override
     public String toString() {
