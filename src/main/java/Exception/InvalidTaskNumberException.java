@@ -1,4 +1,4 @@
-package Exception;
+package exception;
 
 public class InvalidTaskNumberException extends WinnieException {
     public InvalidTaskNumberException(String input, int maxTasks) {

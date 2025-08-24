@@ -1,4 +1,4 @@
-package ChatMessage;
+package chatmessage;
 
 public class ReceivedMessage implements Readable {
 

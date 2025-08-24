@@ -1,9 +1,9 @@
-import Dispatcher.CommandDispatcher;
-import Dispatcher.MessageDispatcher;
-import CliTool.CliReader;
-import ChatMessage.ReceivedMessage;
-import Exception.WinnieException;
-import Exception.UnknownCommandException;
+import chatmessage.ReceivedMessage;
+import clitool.CliReader;
+import dispatcher.CommandDispatcher;
+import dispatcher.MessageDispatcher;
+import exception.UnknownCommandException;
+import exception.WinnieException;
 
 public class Winnie {
     

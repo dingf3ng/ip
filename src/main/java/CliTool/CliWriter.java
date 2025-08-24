@@ -1,6 +1,6 @@
-package CliTool;
+package clitool;
 
-import ChatMessage.Sendable;
+import chatmessage.Sendable;
 
 public class CliWriter {
     public void write(Sendable message) {

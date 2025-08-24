@@ -1,4 +1,4 @@
-package Exception;
+package exception;
 
 public class MissingTimeException extends WinnieException {
     public MissingTimeException(String taskType, String missingPart) {

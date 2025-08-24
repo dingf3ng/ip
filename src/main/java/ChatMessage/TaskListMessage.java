@@ -1,6 +1,6 @@
-package ChatMessage;
+package chatmessage;
 
-import Task.Task;
+import task.Task;
 
 public class TaskListMessage implements Sendable {
     private final Task[] tasks;
