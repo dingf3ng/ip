@@ -4,13 +4,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.time.LocalDateTime;
 
 import task.Deadline;
 import task.Event;
 import task.Task;
 import task.Todo;
-
-import java.util.ArrayList;
+import util.DateTimeUtil;
 
 public class Storage {
     private String filePath;
@@ -70,10 +71,10 @@ public class Storage {
                 return typeStr + " | " + statusStr + " | " + task.getDescription();
             case DEADLINE:
                 Deadline deadline = (Deadline) task;
-                return typeStr + " | " + statusStr + " | " + task.getDescription() + " | " + getDeadlineBy(deadline);
+                return typeStr + " | " + statusStr + " | " + task.getDescription() + " | " + DateTimeUtil.formatForStorage(deadline.getBy());
             case EVENT:
                 Event event = (Event) task;
-                return typeStr + " | " + statusStr + " | " + task.getDescription() + " | " + getEventTiming(event);
+                return typeStr + " | " + statusStr + " | " + task.getDescription() + " | " + DateTimeUtil.formatForStorage(event.getFrom()) + " to " + DateTimeUtil.formatForStorage(event.getTo());
             default:
                 return "";
         }
@@ -101,7 +102,8 @@ public class Storage {
                     throw new Exception("Missing deadline time");
                 }
                 String by = parts[3].trim();
-                task = new Deadline(description, by);
+                LocalDateTime deadlineTime = DateTimeUtil.parseFromStorage(by);
+                task = new Deadline(description, deadlineTime);
                 break;
             case "E":
                 if (parts.length < 4) {
@@ -109,14 +111,13 @@ public class Storage {
                 }
                 String[] timeParts = parts[3].trim().split(" to ");
                 if (timeParts.length != 2) {
-                    timeParts = parts[3].trim().split("-");
-                    if (timeParts.length != 2) {
-                        throw new Exception("Invalid event time format");
-                    }
+                    throw new Exception("Invalid event time format");
                 }
                 String from = timeParts[0].trim();
                 String to = timeParts[1].trim();
-                task = new Event(description, from, to);
+                LocalDateTime fromTime = DateTimeUtil.parseFromStorage(from);
+                LocalDateTime toTime = DateTimeUtil.parseFromStorage(to);
+                task = new Event(description, fromTime, toTime);
                 break;
             default:
                 throw new Exception("Unknown task type: " + type);
@@ -129,20 +130,4 @@ public class Storage {
         return task;
     }
 
-    private String getDeadlineBy(Deadline deadline) {
-        String str = deadline.toString();
-        int start = str.indexOf("(by: ") + 5;
-        int end = str.lastIndexOf(")");
-        return str.substring(start, end);
-    }
-
-    private String getEventTiming(Event event) {
-        String str = event.toString();
-        int fromStart = str.indexOf("(from: ") + 7;
-        int fromEnd = str.indexOf(" to: ");
-        int toEnd = str.lastIndexOf(")");
-        String from = str.substring(fromStart, fromEnd);
-        String to = str.substring(fromEnd + 5, toEnd);
-        return from + " to " + to;
-    }
 }
