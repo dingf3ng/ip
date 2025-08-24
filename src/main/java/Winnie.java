@@ -1,84 +1,45 @@
-import chatmessage.ReceivedMessage;
-import clitool.CliReader;
-import dispatcher.CommandDispatcher;
-import dispatcher.MessageDispatcher;
-import exception.UnknownCommandException;
+import command.Command;
 import exception.WinnieException;
+import storage.Storage;
+import tasklist.TaskList;
+import ui.Ui;
+import parser.Parser;
 
 public class Winnie {
-    
-    public static void main(String[] args) {
-        String logo = """                             
-            %:.     %:-           
-            --%::::::%%           
-            %::::::::-           
-            -:%:#%::::%          
-            -:::::::::::          
-            :-:::-%::::%%         
-            *+%+-----%++*.        
-        +++++*+++++%+++++++      
-        ::::++*+++++++++++*%:     
-        -:::%***++++++++++%:-     
-        -:::***+%%%%%%#-:%=      
-        %:::--:::::::::::%:      
-            ---::::::::::::=       
-            %%::%:::::::::%        
-            -:::-:::::::%         
-            =-:::-----=-:%         
-            -:::   %-:::          
-            -::#   %-::%          
-            %-::%   %-:::%         
-            %%%                   
-        """;
-        System.out.println("Hello from\n" + logo);
+    private Storage storage;
+    private TaskList tasks;
+    private Ui ui;
 
+    public Winnie(String filePath) {
+        ui = new Ui();
+        storage = new Storage(filePath);
+        try {
+            tasks = new TaskList(storage.loadTasks());
+        } catch (Exception e) {
+            ui.showLoadingError();
+            tasks = new TaskList();
+        }
+    }
 
-        MessageDispatcher outputMessageDispatcher = 
-                new MessageDispatcher();
-        CommandDispatcher inputMessageDispatcher = 
-                new CommandDispatcher(outputMessageDispatcher);
+    public void run() {
+        ui.showWelcome();
 
-        outputMessageDispatcher.sayGreeting();
-
-        CliReader reader = new CliReader();
         while (true) {
-            ReceivedMessage userInput = reader.read();
-            String commandInput = userInput.getMessageContent().trim();
-            Command command = Command.fromString(commandInput);
-
             try {
-                switch (command) {
-                    case BYE:
-                        outputMessageDispatcher.sayGoodbye();
-                        return;
-                    case LIST:
-                        outputMessageDispatcher.listTasks();
-                        break;
-                    case MARK:
-                        inputMessageDispatcher.handleMarkCommand(commandInput);
-                        break;
-                    case UNMARK:
-                        inputMessageDispatcher.handleUnmarkCommand(commandInput);
-                        break;
-                    case DELETE:
-                        inputMessageDispatcher.handleDeleteCommand(commandInput);
-                        break;
-                    case TODO:
-                        inputMessageDispatcher.handleTodoCommand(commandInput);
-                        break;
-                    case DEADLINE:
-                        inputMessageDispatcher.handleDeadlineCommand(commandInput);
-                        break;
-                    case EVENT:
-                        inputMessageDispatcher.handleEventCommand(commandInput);
-                        break;
-                    case UNKNOWN:
-                    default:
-                        throw new UnknownCommandException(commandInput);
+                String fullCommand = ui.readCommand();
+                Command command = Parser.parse(fullCommand);
+                command.execute(tasks, ui, storage);
+                if (command.isExit()) {
+                    break;
                 }
             } catch (WinnieException e) {
-                outputMessageDispatcher.handleError(e);
+                ui.showError(e.getMessage());
             }
         }
+    }
+
+
+    public static void main(String[] args) {
+        new Winnie("./data/winnie.txt").run();
     }
 }

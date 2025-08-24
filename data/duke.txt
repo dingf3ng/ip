@@ -1,7 +1,0 @@
-D | 1 | return book | 2019-12-02 18:00
-E | 0 | project meeting | 2019-10-15 14:00 to 2019-10-15 16:00
-D | 0 | simple date | 2023-05-20 00:00
-D | 0 | return book | 2019-12-02 18:00
-E | 0 | meeting | 2024-03-15 10:00 to 2024-03-15 11:30
-D | 0 | submit assignment | 2024-12-25 00:00
-E | 0 | vacation | 2024-07-01 00:00 to 2024-07-15 00:00

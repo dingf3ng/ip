@@ -11,6 +11,6 @@ public class UnmarkTaskMessage implements Sendable {
 
     @Override
     public String getMessageContent() {
-        return "OK, I've marked this task as not done yet:\n  " + task.toString();
+        return "OK, I've marked this task as not done yet:\n     " + task.toString();
     }
 }
