@@ -54,7 +54,9 @@ public class Storage {
                         tasks.add(task);
                     }
                 } catch (Exception e) {
-                    System.err.println("Warning: Skipping corrupted line in data file: " + line);
+                    System.err.println(
+                            "Warning: Skipping corrupted line in data file: " 
+                            + line);
                 }
             }
         }
@@ -64,17 +66,27 @@ public class Storage {
 
     private String taskToString(Task task) {
         String statusStr = task.isDone() ? "1" : "0";
-        String typeStr = task.getTaskType().toString().substring(0, 1);
+        String typeStr = task.getTaskType()
+                .toString().substring(0, 1);
         
         switch (task.getTaskType()) {
             case TODO:
-                return typeStr + " | " + statusStr + " | " + task.getDescription();
+                return typeStr 
+                        + " | " + statusStr 
+                        + " | " + task.getDescription();
             case DEADLINE:
                 Deadline deadline = (Deadline) task;
-                return typeStr + " | " + statusStr + " | " + task.getDescription() + " | " + DateTimeUtil.formatForStorage(deadline.getBy());
+                return typeStr 
+                        + " | " + statusStr 
+                        + " | " + task.getDescription() 
+                        + " | " + DateTimeUtil.formatForStorage(deadline.getBy());
             case EVENT:
                 Event event = (Event) task;
-                return typeStr + " | " + statusStr + " | " + task.getDescription() + " | " + DateTimeUtil.formatForStorage(event.getFrom()) + " to " + DateTimeUtil.formatForStorage(event.getTo());
+                return typeStr 
+                        + " | " + statusStr 
+                        + " | " + task.getDescription() 
+                        + " | " + DateTimeUtil.formatForStorage(event.getFrom()) 
+                        + " to " + DateTimeUtil.formatForStorage(event.getTo());
             default:
                 return "";
         }

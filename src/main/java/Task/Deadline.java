@@ -23,6 +23,8 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        return getTypeIcon() + getStatusIcon() + " " + description + " (by: " + DateTimeUtil.formatForDisplay(by) + ")";
+        return getTypeIcon() 
+                + getStatusIcon() + " " + description 
+                + " (by: " + DateTimeUtil.formatForDisplay(by) + ")";
     }
 }
