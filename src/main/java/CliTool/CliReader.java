@@ -1,6 +1,6 @@
-package CliTool;
+package clitool;
 
-import ChatMessage.ReceivedMessage;
+import chatmessage.ReceivedMessage;
 
 public class CliReader {
     private java.util.Scanner scanner = new java.util.Scanner(System.in);

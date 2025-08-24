@@ -1,23 +1,23 @@
-package Dispatcher;
+package dispatcher;
 
-import ChatMessage.Sendable;
-import ChatMessage.GoodByeMessage;
-import ChatMessage.GreetingMessage;
-import ChatMessage.TaskAddedMessage;
-import ChatMessage.TaskListMessage;
-import ChatMessage.MarkTaskMessage;
-import ChatMessage.UnmarkTaskMessage;
-import ChatMessage.DeleteTaskMessage;
-import ChatMessage.ErrorMessage;
-import CliTool.*;
-import TaskManager.TaskManager;
-import Task.Task;
-import Task.Todo;
-import Task.Deadline;
-import Task.Event;
-import Exception.WinnieException;
-import Exception.EmptyDescriptionException;
-import Exception.InvalidTaskNumberException;
+import chatmessage.DeleteTaskMessage;
+import chatmessage.ErrorMessage;
+import chatmessage.GoodByeMessage;
+import chatmessage.GreetingMessage;
+import chatmessage.MarkTaskMessage;
+import chatmessage.Sendable;
+import chatmessage.TaskAddedMessage;
+import chatmessage.TaskListMessage;
+import chatmessage.UnmarkTaskMessage;
+import clitool.CliWriter;
+import exception.EmptyDescriptionException;
+import exception.InvalidTaskNumberException;
+import exception.WinnieException;
+import task.Deadline;
+import task.Event;
+import task.Task;
+import task.Todo;
+import taskmanager.TaskManager;
 
 public class MessageDispatcher {
     private TaskManager taskManager;
@@ -79,7 +79,8 @@ public class MessageDispatcher {
 
     public void markTask(int taskNumber) throws WinnieException {
         if (taskNumber < 1 || taskNumber > taskManager.getTaskCount()) {
-            throw new InvalidTaskNumberException(String.valueOf(taskNumber), taskManager.getTaskCount());
+            throw new InvalidTaskNumberException(
+                    String.valueOf(taskNumber), taskManager.getTaskCount());
         }
         Task markedTask = taskManager.markTask(taskNumber - 1);
         sendOut(new MarkTaskMessage(markedTask));
@@ -87,7 +88,8 @@ public class MessageDispatcher {
 
     public void unmarkTask(int taskNumber) throws WinnieException {
         if (taskNumber < 1 || taskNumber > taskManager.getTaskCount()) {
-            throw new InvalidTaskNumberException(String.valueOf(taskNumber), taskManager.getTaskCount());
+            throw new InvalidTaskNumberException(
+                    String.valueOf(taskNumber), taskManager.getTaskCount());
         }
         Task unmarkedTask = taskManager.unmarkTask(taskNumber - 1);
         sendOut(new UnmarkTaskMessage(unmarkedTask));
@@ -95,7 +97,8 @@ public class MessageDispatcher {
 
     public void deleteTask(int taskNumber) throws WinnieException {
         if (taskNumber < 1 || taskNumber > taskManager.getTaskCount()) {
-            throw new InvalidTaskNumberException(String.valueOf(taskNumber), taskManager.getTaskCount());
+            throw new InvalidTaskNumberException(
+                    String.valueOf(taskNumber), taskManager.getTaskCount());
         }
         Task deletedTask = taskManager.deleteTask(taskNumber - 1);
         sendOut(new DeleteTaskMessage(deletedTask, taskManager.getTaskCount()));

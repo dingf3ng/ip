@@ -1,0 +1,4 @@
+T | 0 | valid task
+INVALID LINE
+D | 1 | incomplete
+T | 1 | another valid task

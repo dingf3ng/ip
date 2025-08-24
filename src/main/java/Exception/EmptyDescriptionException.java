@@ -1,4 +1,4 @@
-package Exception;
+package exception;
 
 public class EmptyDescriptionException extends WinnieException {
     public EmptyDescriptionException(String taskType) {

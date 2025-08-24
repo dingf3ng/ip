@@ -1,4 +1,4 @@
-package ChatMessage;
+package chatmessage;
 
 public class ErrorMessage implements Sendable {
     private final String errorMessage;

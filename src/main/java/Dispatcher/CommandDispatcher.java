@@ -1,7 +1,7 @@
-package Dispatcher;
+package dispatcher;
 
-import Exception.MissingTimeException;
-import Exception.WinnieException;
+import exception.MissingTimeException;
+import exception.WinnieException;
 
 public class CommandDispatcher {
     private MessageDispatcher messageDispatcher;
@@ -12,55 +12,65 @@ public class CommandDispatcher {
 
     public void handleMarkCommand(String commandInput) throws WinnieException {
         if (commandInput.trim().equals("mark")) {
-            throw new WinnieException("Please specify which task number to mark. Example: mark 1");
+            throw new WinnieException(
+                "Please specify which task number to mark. Example: mark 1");
         }
         String numberStr = commandInput.substring(5).trim();
         if (numberStr.isEmpty()) {
-            throw new WinnieException("Please specify which task number to mark. Example: mark 1");
+            throw new WinnieException(
+                "Please specify which task number to mark. Example: mark 1");
         }
         try {
             int taskNumber = Integer.parseInt(numberStr);
             messageDispatcher.markTask(taskNumber);
         } catch (NumberFormatException e) {
-            throw new WinnieException("Task number must be a valid number. You entered: " + numberStr);
+            throw new WinnieException(
+                "Task number must be a valid number. You entered: " + numberStr);
         }
     }
 
     public void handleUnmarkCommand(String commandInput) throws WinnieException {
         if (commandInput.trim().equals("unmark")) {
-            throw new WinnieException("Please specify which task number to unmark. Example: unmark 1");
+            throw new WinnieException(
+                "Please specify which task number to unmark. Example: unmark 1");
         }
         String numberStr = commandInput.substring(7).trim();
         if (numberStr.isEmpty()) {
-            throw new WinnieException("Please specify which task number to unmark. Example: unmark 1");
+            throw new WinnieException(
+                "Please specify which task number to unmark. Example: unmark 1");
         }
         try {
             int taskNumber = Integer.parseInt(numberStr);
             messageDispatcher.unmarkTask(taskNumber);
         } catch (NumberFormatException e) {
-            throw new WinnieException("Task number must be a valid number. You entered: " + numberStr);
+            throw new WinnieException(
+                "Task number must be a valid number. You entered: " + numberStr);
         }
     }
 
     public void handleDeleteCommand(String commandInput) throws WinnieException {
         if (commandInput.trim().equals("delete")) {
-            throw new WinnieException("Please specify which task number to delete. Example: delete 1");
+            throw new WinnieException(
+                "Please specify which task number to delete. Example: delete 1");
         }
         String numberStr = commandInput.substring(7).trim();
         if (numberStr.isEmpty()) {
-            throw new WinnieException("Please specify which task number to delete. Example: delete 1");
+            throw new WinnieException(
+                "Please specify which task number to delete. Example: delete 1");
         }
         try {
             int taskNumber = Integer.parseInt(numberStr);
             messageDispatcher.deleteTask(taskNumber);
         } catch (NumberFormatException e) {
-            throw new WinnieException("Task number must be a valid number. You entered: " + numberStr);
+            throw new WinnieException(
+                "Task number must be a valid number. You entered: " + numberStr);
         }
     }
 
     public void handleTodoCommand(String commandInput) throws WinnieException {
         if (commandInput.trim().equals("todo")) {
-            throw new WinnieException("The description of a todo cannot be empty.");
+            throw new WinnieException(
+                "The description of a todo cannot be empty.");
         }
         String description = commandInput.substring(5).trim();
         messageDispatcher.addTodo(description);

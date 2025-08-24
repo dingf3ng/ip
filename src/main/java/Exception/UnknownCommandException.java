@@ -1,4 +1,4 @@
-package Exception;
+package exception;
 
 public class UnknownCommandException extends WinnieException {
     public UnknownCommandException(String command) {
