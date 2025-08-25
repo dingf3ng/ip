@@ -1,7 +1,6 @@
 package winnie.command;
 
 import winnie.storage.Storage;
-import winnie.task.Task;
 import winnie.tasklist.TaskList;
 import winnie.ui.Ui;
 
@@ -17,15 +16,7 @@ public class FindCommand extends Command {
 
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
-        TaskList matchingTasks = new TaskList();
-        Task[] allTasks = tasks.getTasks();
-        
-        for (Task task : allTasks) {
-            if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
-                matchingTasks.addTask(task);
-            }
-        }
-        
+        TaskList matchingTasks = tasks.findTasks(keyword);
         ui.showFoundTasks(matchingTasks);
     }
 

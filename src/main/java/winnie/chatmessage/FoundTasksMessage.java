@@ -1,6 +1,5 @@
 package winnie.chatmessage;
 
-import winnie.task.Task;
 import winnie.tasklist.TaskList;
 
 /**
@@ -20,12 +19,11 @@ public class FoundTasksMessage implements Sendable {
         }
 
         StringBuilder message = new StringBuilder("Here are the matching tasks in your list:\n");
-        Task[] tasks = foundTasks.getTasks();
-        
-        for (int i = 0; i < tasks.length; i++) {
-            message.append(String.format(" %d.%s\n", i + 1, tasks[i].toString()));
+
+        for (int i = 0; i < foundTasks.getTaskCount(); i++) {
+            message.append(String.format("    %d.%s\n", i + 1, foundTasks.getTask(i).toString()));
         }
-        
+
         return message.toString().trim();
     }
 }

@@ -97,6 +97,22 @@ public class TaskList {
     }
 
     /**
+     * Finds tasks in the list that match the given keyword.
+     *
+     * @param keyword The keyword to search for.
+     * @return A TaskList containing the matching tasks.
+     */
+    public TaskList findTasks(String keyword) {
+        TaskList foundTasks = new TaskList();
+        for (Task task : tasks) {
+            if (task.getDescription().contains(keyword)) {
+                foundTasks.addTask(task);
+            }
+        }
+        return foundTasks;
+    }
+
+    /**
      * Returns a copy of the tasks in the task list. This should only be used
      * for testing purposes.
      */
