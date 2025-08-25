@@ -1,13 +1,13 @@
 package winnie.task;
 
-public enum TaskType {
+public enum TaskEnum {
     TODO("T"),
     DEADLINE("D"),
     EVENT("E");
 
     private final String icon;
 
-    TaskType(String icon) {
+    TaskEnum(String icon) {
         this.icon = icon;
     }
 

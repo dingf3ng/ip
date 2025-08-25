@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import winnie.task.Todo;
 import winnie.task.Task;
-import winnie.task.TaskType;
 
 public class TaskListTest {
     private TaskList taskList;
@@ -33,10 +32,10 @@ public class TaskListTest {
     public void getTasks_afterAddingTasks_returnsCorrectTasks() {
         Task task1 = new Todo("Task 1");
         Task task2 = new Todo("Task 2");
-        
+
         taskList.addTask(task1);
         taskList.addTask(task2);
-        
+
         Task[] tasks = taskList.getTasks();
         assertEquals(2, tasks.length);
         assertEquals("Task 1", tasks[0].getDescription());
@@ -47,7 +46,7 @@ public class TaskListTest {
     public void markTask_validIndex_marksTaskAsDone() {
         taskList.addTask(testTask);
         Task markedTask = taskList.markTask(0);
-        
+
         assertNotNull(markedTask);
         assertTrue(markedTask.isDone());
     }
@@ -63,9 +62,9 @@ public class TaskListTest {
     public void unmarkTask_validIndex_marksTaskAsNotDone() {
         taskList.addTask(testTask);
         testTask.markAsDone();
-        
+
         Task unmarkedTask = taskList.unmarkTask(0);
-        
+
         assertNotNull(unmarkedTask);
         assertFalse(unmarkedTask.isDone());
     }
@@ -74,7 +73,7 @@ public class TaskListTest {
     public void getTask_validIndex_returnsCorrectTask() {
         taskList.addTask(testTask);
         Task retrievedTask = taskList.getTask(0);
-        
+
         assertNotNull(retrievedTask);
         assertEquals(testTask.getDescription(), retrievedTask.getDescription());
     }
@@ -89,7 +88,7 @@ public class TaskListTest {
     public void deleteTask_validIndex_removesTaskAndDecreasesCount() {
         taskList.addTask(testTask);
         Task deletedTask = taskList.deleteTask(0);
-        
+
         assertNotNull(deletedTask);
         assertEquals(testTask.getDescription(), deletedTask.getDescription());
         assertEquals(0, taskList.getTaskCount());

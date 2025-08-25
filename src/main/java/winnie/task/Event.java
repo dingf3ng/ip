@@ -7,15 +7,15 @@ import winnie.exception.InvalidDateTimeException;
 public class Event extends Task {
     private LocalDateTime from;
     private LocalDateTime to;
-    
+
     public Event(String description, LocalDateTime from, LocalDateTime to) {
-        super(description, TaskType.EVENT);
+        super(description, TaskEnum.EVENT);
         this.from = from;
         this.to = to;
     }
 
     public Event(String description, String fromString, String toString) throws InvalidDateTimeException {
-        super(description, TaskType.EVENT);
+        super(description, TaskEnum.EVENT);
         this.from = DateTimeUtil.parseDateTime(fromString);
         this.to = DateTimeUtil.parseDateTime(toString);
     }
@@ -30,7 +30,7 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return getTypeIcon() + getStatusIcon() + " " + description + " (from: " + 
-               DateTimeUtil.formatForDisplay(from) + " to: " + DateTimeUtil.formatForDisplay(to) + ")";
+        return getTypeIcon() + getStatusIcon() + " " + description + " (from: " +
+                DateTimeUtil.formatForDisplay(from) + " to: " + DateTimeUtil.formatForDisplay(to) + ")";
     }
 }

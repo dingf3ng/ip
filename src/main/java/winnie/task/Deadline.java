@@ -6,14 +6,14 @@ import winnie.exception.InvalidDateTimeException;
 
 public class Deadline extends Task {
     private LocalDateTime by;
-    
+
     public Deadline(String description, LocalDateTime by) {
-        super(description, TaskType.DEADLINE);
+        super(description, TaskEnum.DEADLINE);
         this.by = by;
     }
 
     public Deadline(String description, String byString) throws InvalidDateTimeException {
-        super(description, TaskType.DEADLINE);
+        super(description, TaskEnum.DEADLINE);
         this.by = DateTimeUtil.parseDateTime(byString);
     }
 
@@ -23,8 +23,8 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        return getTypeIcon() 
-                + getStatusIcon() + " " + description 
+        return getTypeIcon()
+                + getStatusIcon() + " " + description
                 + " (by: " + DateTimeUtil.formatForDisplay(by) + ")";
     }
 }

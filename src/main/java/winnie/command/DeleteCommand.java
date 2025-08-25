@@ -21,7 +21,7 @@ public class DeleteCommand extends Command {
             }
             Task deletedTask = tasks.deleteTask(taskNumber - 1);
             ui.showTaskDeleted(deletedTask, tasks.getTaskCount());
-            storage.saveTasks(tasks.getTasks());
+            storage.saveTasks(tasks);
         } catch (Exception e) {
             ui.showError(e.getMessage());
         }

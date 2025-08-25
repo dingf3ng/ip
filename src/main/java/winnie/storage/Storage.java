@@ -11,6 +11,7 @@ import winnie.task.Deadline;
 import winnie.task.Event;
 import winnie.task.Task;
 import winnie.task.Todo;
+import winnie.tasklist.TaskList;
 import winnie.util.DateTimeUtil;
 
 public class Storage {
@@ -20,28 +21,28 @@ public class Storage {
         this.filePath = filePath;
     }
 
-    public void saveTasks(Task[] tasks) throws IOException {
+    public void saveTasks(TaskList tasks) throws IOException {
         File file = new File(filePath);
         File parentDir = file.getParentFile();
-        
+
         if (parentDir != null && !parentDir.exists()) {
             parentDir.mkdirs();
         }
 
         FileWriter writer = new FileWriter(file);
-        for (Task task : tasks) {
-            String taskData = taskToString(task);
+        for (int i = 0; i < tasks.getTaskCount(); i++) {
+            String taskData = taskToPersistentString(tasks.getTask(i));
             writer.write(taskData + System.lineSeparator());
         }
         writer.close();
     }
 
-    public ArrayList<Task> loadTasks() throws IOException {
+    public TaskList loadTasks() throws IOException {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
-        
+
         if (!file.exists()) {
-            return tasks;
+            return new TaskList(tasks);
         }
 
         Scanner scanner = new Scanner(file);
@@ -49,50 +50,51 @@ public class Storage {
             String line = scanner.nextLine().trim();
             if (!line.isEmpty()) {
                 try {
-                    Task task = stringToTask(line);
+                    Task task = persistentStringToTask(line);
                     if (task != null) {
                         tasks.add(task);
                     }
                 } catch (Exception e) {
                     System.err.println(
-                            "Warning: Skipping corrupted line in data file: " 
-                            + line);
+                            "Warning: Skipping corrupted line in data file: "
+                                    + line);
                 }
             }
         }
         scanner.close();
-        return tasks;
+        return new TaskList(tasks);
     }
 
-    private String taskToString(Task task) {
+    // TODO: move to task
+    private String taskToPersistentString(Task task) {
         String statusStr = task.isDone() ? "1" : "0";
         String typeStr = task.getTaskType()
                 .toString().substring(0, 1);
-        
+
         switch (task.getTaskType()) {
             case TODO:
-                return typeStr 
-                        + " | " + statusStr 
+                return typeStr
+                        + " | " + statusStr
                         + " | " + task.getDescription();
             case DEADLINE:
                 Deadline deadline = (Deadline) task;
-                return typeStr 
-                        + " | " + statusStr 
-                        + " | " + task.getDescription() 
+                return typeStr
+                        + " | " + statusStr
+                        + " | " + task.getDescription()
                         + " | " + DateTimeUtil.formatForStorage(deadline.getBy());
             case EVENT:
                 Event event = (Event) task;
-                return typeStr 
-                        + " | " + statusStr 
-                        + " | " + task.getDescription() 
-                        + " | " + DateTimeUtil.formatForStorage(event.getFrom()) 
+                return typeStr
+                        + " | " + statusStr
+                        + " | " + task.getDescription()
+                        + " | " + DateTimeUtil.formatForStorage(event.getFrom())
                         + " to " + DateTimeUtil.formatForStorage(event.getTo());
             default:
                 return "";
         }
     }
 
-    private Task stringToTask(String data) throws Exception {
+    private Task persistentStringToTask(String data) throws Exception {
         String[] parts = data.split(" \\| ");
         if (parts.length < 3) {
             throw new Exception("Invalid data format");
@@ -104,7 +106,7 @@ public class Storage {
         boolean isDone = "1".equals(status);
 
         Task task = null;
-        
+
         switch (type.toUpperCase()) {
             case "T":
                 task = new Todo(description);
@@ -138,7 +140,7 @@ public class Storage {
         if (task != null && isDone) {
             task.markAsDone();
         }
-        
+
         return task;
     }
 
