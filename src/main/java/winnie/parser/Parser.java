@@ -5,12 +5,22 @@ import winnie.exception.WinnieException;
 import winnie.exception.EmptyDescriptionException;
 import winnie.exception.MissingTimeException;
 
+/**
+ * Parses user input into commands.
+ */
 public class Parser {
 
+    /**
+     * Parses the user input into a command.
+     *
+     * @param fullCommand The full user input command.
+     * @return The parsed Command object.
+     * @throws WinnieException If the command is invalid.
+     */
     public static Command parse(String fullCommand) throws WinnieException {
         String commandWord = getCommandWord(fullCommand);
         CommandEnum command = CommandEnum.fromString(commandWord);
-        
+
         switch (command) {
             case BYE:
                 return new ByeCommand();
@@ -30,7 +40,7 @@ public class Parser {
                 return parseEventCommand(fullCommand);
             case UNKNOWN:
             default:
-                return new UnknownCommand(fullCommand);
+                return new UnknownCommand();
         }
     }
 
@@ -102,7 +112,7 @@ public class Parser {
         if (commandInput.trim().equals("deadline")) {
             throw new EmptyDescriptionException("deadline");
         }
-        
+
         String args = commandInput.substring(8).trim();
         if (args.isEmpty()) {
             throw new EmptyDescriptionException("deadline");
@@ -130,7 +140,7 @@ public class Parser {
         if (commandInput.trim().equals("event")) {
             throw new EmptyDescriptionException("event");
         }
-        
+
         String args = commandInput.substring(5).trim();
         if (args.isEmpty()) {
             throw new EmptyDescriptionException("event");

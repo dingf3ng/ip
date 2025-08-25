@@ -1,12 +1,17 @@
 package winnie.command;
 
+import winnie.exception.InvalidTaskNumberException;
 import winnie.exception.WinnieException;
 import winnie.storage.Storage;
 import winnie.task.Task;
 import winnie.tasklist.TaskList;
 import winnie.ui.Ui;
 
+/**
+ * Command to unmark a task as not done.
+ */
 public class UnmarkCommand extends Command {
+
     private int taskNumber;
 
     public UnmarkCommand(int taskNumber) {
@@ -17,11 +22,11 @@ public class UnmarkCommand extends Command {
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         try {
             if (taskNumber < 1 || taskNumber > tasks.getTaskCount()) {
-                throw new WinnieException("Invalid task number: " + taskNumber);
+                throw new InvalidTaskNumberException(taskNumber, tasks.getTaskCount());
             }
             Task unmarkedTask = tasks.unmarkTask(taskNumber - 1);
             ui.showTaskUnmarked(unmarkedTask);
-            storage.saveTasks(tasks.getTasks());
+            storage.saveTasks(tasks);
         } catch (Exception e) {
             ui.showError(e.getMessage());
         }

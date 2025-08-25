@@ -20,7 +20,7 @@ public class DeadlineCommand extends Command {
             Deadline deadline = new Deadline(description, by);
             tasks.addTask(deadline);
             ui.showTaskAdded(deadline, tasks.getTaskCount());
-            storage.saveTasks(tasks.getTasks());
+            storage.saveTasks(tasks);
         } catch (Exception e) {
             ui.showError(e.getMessage());
         }

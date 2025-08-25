@@ -22,7 +22,7 @@ public class EventCommand extends Command {
             Event event = new Event(description, from, to);
             tasks.addTask(event);
             ui.showTaskAdded(event, tasks.getTaskCount());
-            storage.saveTasks(tasks.getTasks());
+            storage.saveTasks(tasks);
         } catch (Exception e) {
             ui.showError(e.getMessage());
         }
