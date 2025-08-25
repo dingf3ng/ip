@@ -1,7 +1,6 @@
 package winnie.command;
 
 import winnie.exception.InvalidTaskNumberException;
-import winnie.exception.WinnieException;
 import winnie.storage.Storage;
 import winnie.task.Task;
 import winnie.tasklist.TaskList;

@@ -9,6 +9,7 @@ public enum CommandEnum {
     TODO("todo"),
     DEADLINE("deadline"),
     EVENT("event"),
+    FIND("find"),
     UNKNOWN("");
 
     private final String commandWord;

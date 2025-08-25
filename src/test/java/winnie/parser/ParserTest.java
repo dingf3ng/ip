@@ -84,4 +84,24 @@ public class ParserTest {
         Command command = Parser.parse("invalid");
         assertTrue(command instanceof UnknownCommand);
     }
+
+    @Test
+    public void parse_validFindCommand_returnsFindCommand() throws WinnieException {
+        Command command = Parser.parse("find book");
+        assertTrue(command instanceof FindCommand);
+    }
+
+    @Test
+    public void parse_emptyFindCommand_throwsException() {
+        assertThrows(WinnieException.class, () -> {
+            Parser.parse("find");
+        });
+    }
+
+    @Test
+    public void parse_findCommandWithOnlySpaces_throwsException() {
+        assertThrows(WinnieException.class, () -> {
+            Parser.parse("find   ");
+        });
+    }
 }

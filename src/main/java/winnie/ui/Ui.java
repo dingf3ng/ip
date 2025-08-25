@@ -14,6 +14,7 @@ import winnie.chatmessage.MarkTaskMessage;
 import winnie.chatmessage.UnmarkTaskMessage;
 import winnie.chatmessage.DeleteTaskMessage;
 import winnie.chatmessage.ErrorMessage;
+import winnie.chatmessage.FoundTasksMessage;
 
 /**
  * User interface class for handling input and output.
@@ -125,6 +126,15 @@ public class Ui {
      */
     public void showLoadingError() {
         showError("Error loading tasks from file. Starting with empty task list.");
+    }
+
+    /**
+     * Shows the found tasks matching a search keyword.
+     *
+     * @param foundTasks The TaskList containing matching tasks.
+     */
+    public void showFoundTasks(TaskList foundTasks) {
+        sendMessage(new FoundTasksMessage(foundTasks));
     }
 
     /**
