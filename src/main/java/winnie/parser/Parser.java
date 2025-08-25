@@ -5,8 +5,18 @@ import winnie.exception.WinnieException;
 import winnie.exception.EmptyDescriptionException;
 import winnie.exception.MissingTimeException;
 
+/**
+ * Parses user input into commands.
+ */
 public class Parser {
 
+    /**
+     * Parses the user input into a command.
+     *
+     * @param fullCommand The full user input command.
+     * @return The parsed Command object.
+     * @throws WinnieException If the command is invalid.
+     */
     public static Command parse(String fullCommand) throws WinnieException {
         String commandWord = getCommandWord(fullCommand);
         CommandEnum command = CommandEnum.fromString(commandWord);

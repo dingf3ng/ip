@@ -1,7 +1,11 @@
 package winnie.exception;
 
+/**
+ * Exception thrown when an unknown command is encountered.
+ */
 public class UnknownCommandException extends WinnieException {
     public UnknownCommandException(String command) {
-        super("Sorry, I don't understand what '" + command + "' means. Try 'list', 'todo', 'deadline', 'event', 'mark', 'unmark', or 'bye'.");
+        super("Sorry, I don't understand what '" + command
+                + "' means. Try 'list', 'todo', 'deadline', 'event', 'mark', 'unmark', or 'bye'.");
     }
 }

@@ -15,7 +15,7 @@ public class TodoTest {
     @Test
     public void constructor_validDescription_createsTodoTask() {
         assertEquals("Buy groceries", todo.getDescription());
-        assertEquals(TaskType.TODO, todo.getTaskType());
+        assertEquals(TaskEnum.TODO, todo.getTaskType());
         assertFalse(todo.isDone());
     }
 
@@ -73,6 +73,6 @@ public class TodoTest {
 
     @Test
     public void getTaskType_todoTask_returnsTodoType() {
-        assertEquals(TaskType.TODO, todo.getTaskType());
+        assertEquals(TaskEnum.TODO, todo.getTaskType());
     }
 }

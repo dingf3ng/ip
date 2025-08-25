@@ -14,13 +14,28 @@ import winnie.task.Todo;
 import winnie.tasklist.TaskList;
 import winnie.util.DateTimeUtil;
 
+/**
+ * Handles the loading and saving of tasks to and from a file.
+ */
 public class Storage {
+
     private String filePath;
 
+    /**
+     * Creates a storage object.
+     *
+     * @param filePath The file path to the storage file.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Saves the tasks to the storage file.
+     *
+     * @param tasks The task list to save.
+     * @throws IOException If an I/O error occurs.
+     */
     public void saveTasks(TaskList tasks) throws IOException {
         File file = new File(filePath);
         File parentDir = file.getParentFile();
@@ -37,6 +52,12 @@ public class Storage {
         writer.close();
     }
 
+    /**
+     * Loads the tasks from the storage file.
+     *
+     * @return The task list loaded from the file.
+     * @throws IOException If an I/O error occurs.
+     */
     public TaskList loadTasks() throws IOException {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
@@ -65,7 +86,6 @@ public class Storage {
         return new TaskList(tasks);
     }
 
-    // TODO: move to task
     private String taskToPersistentString(Task task) {
         String statusStr = task.isDone() ? "1" : "0";
         String typeStr = task.getTaskType()
