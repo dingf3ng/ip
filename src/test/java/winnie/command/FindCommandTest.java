@@ -5,8 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 
 import winnie.task.Todo;
-import winnie.task.Task;
 import winnie.tasklist.TaskList;
+import winnie.ui.Cli;
 import winnie.ui.Ui;
 import winnie.storage.Storage;
 
@@ -20,9 +20,9 @@ public class FindCommandTest {
     public void setUp() {
         findCommand = new FindCommand("book");
         taskList = new TaskList();
-        ui = new Ui();
+        ui = new Cli();
         storage = new Storage("./data/test.txt");
-        
+
         taskList.addTask(new Todo("read book"));
         taskList.addTask(new Todo("buy groceries"));
         taskList.addTask(new Todo("return book to library"));

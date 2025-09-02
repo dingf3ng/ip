@@ -1,78 +1,30 @@
 package winnie.ui;
 
-import winnie.chatmessage.ReceivedMessage;
-import winnie.chatmessage.Sendable;
-import winnie.clitool.CliReader;
-import winnie.clitool.CliWriter;
+import winnie.command.Command;
 import winnie.task.Task;
 import winnie.tasklist.TaskList;
-import winnie.chatmessage.GoodByeMessage;
-import winnie.chatmessage.GreetingMessage;
-import winnie.chatmessage.TaskListMessage;
-import winnie.chatmessage.TaskAddedMessage;
-import winnie.chatmessage.MarkTaskMessage;
-import winnie.chatmessage.UnmarkTaskMessage;
-import winnie.chatmessage.DeleteTaskMessage;
-import winnie.chatmessage.ErrorMessage;
-import winnie.chatmessage.FoundTasksMessage;
 
 /**
- * User interface class for handling input and output.
+ * User interface for handling input and output.
  */
-public class Ui {
-    private CliWriter writer;
-    private CliReader reader;
-
-    public Ui() {
-        this.writer = new CliWriter();
-        this.reader = new CliReader();
-    }
+public interface Ui {
 
     /**
      * Shows a welcome message to the user.
      */
-    public void showWelcome() {
-        String logo = """
-                    %:.     %:-
-                    --%::::::%%
-                    %::::::::-
-                    -:%:#%::::%
-                    -:::::::::::
-                    :-:::-%::::%%
-                    *+%+-----%++*.
-                +++++*+++++%+++++++
-                ::::++*+++++++++++*%:
-                -:::%***++++++++++%:-
-                -:::***+%%%%%%#-:%=
-                %:::--:::::::::::%:
-                    ---::::::::::::=
-                    %%::%:::::::::%
-                    -:::-:::::::%
-                    =-:::-----=-:%
-                    -:::   %-:::
-                    -::#   %-::%
-                    %-::%   %-:::%
-                    %%%
-                """;
-        System.out.println("Hello from\n" + logo);
-        sendMessage(new GreetingMessage());
-    }
+    public void showWelcome();
 
     /**
      * Shows a goodbye message to the user.
      */
-    public void showGoodbye() {
-        sendMessage(new GoodByeMessage());
-    }
+    public void showGoodbye();
 
     /**
      * Shows the current task list to the user.
      *
      * @param tasks The array of tasks to display.
      */
-    public void showTaskList(TaskList tasks) {
-        sendMessage(new TaskListMessage(tasks));
-    }
+    public void showTaskList(TaskList tasks);
 
     /**
      * Shows a message when a task is added.
@@ -80,27 +32,21 @@ public class Ui {
      * @param task      The task that was added.
      * @param taskCount The current number of tasks.
      */
-    public void showTaskAdded(Task task, int taskCount) {
-        sendMessage(new TaskAddedMessage(task, taskCount));
-    }
+    public void showTaskAdded(Task task, int taskCount);
 
     /**
      * Shows a message when a task is marked as done.
      *
      * @param task The task that was marked.
      */
-    public void showTaskMarked(Task task) {
-        sendMessage(new MarkTaskMessage(task));
-    }
+    public void showTaskMarked(Task task);
 
     /**
      * Shows a message when a task is unmarked as done.
      *
      * @param task The task that was unmarked.
      */
-    public void showTaskUnmarked(Task task) {
-        sendMessage(new UnmarkTaskMessage(task));
-    }
+    public void showTaskUnmarked(Task task);
 
     /**
      * Shows a message when a task is deleted.
@@ -108,52 +54,31 @@ public class Ui {
      * @param task      The task that was deleted.
      * @param taskCount The current number of tasks.
      */
-    public void showTaskDeleted(Task task, int taskCount) {
-        sendMessage(new DeleteTaskMessage(task, taskCount));
-    }
+    public void showTaskDeleted(Task task, int taskCount);
 
     /**
      * Shows an error message to the user.
      *
      * @param errorMessage The error message to display.
      */
-    public void showError(String errorMessage) {
-        sendMessage(new ErrorMessage(errorMessage));
-    }
+    public void showError(String errorMessage);
 
     /**
      * Shows a message when there is an error loading tasks.
      */
-    public void showLoadingError() {
-        showError("Error loading tasks from file. Starting with empty task list.");
-    }
+    public void showLoadingError();
 
     /**
      * Shows the found tasks matching a search keyword.
      *
      * @param foundTasks The TaskList containing matching tasks.
      */
-    public void showFoundTasks(TaskList foundTasks) {
-        sendMessage(new FoundTasksMessage(foundTasks));
-    }
+    public void showFoundTasks(TaskList foundTasks);
 
     /**
      * Reads a command from the user.
      *
      * @return The user's command.
      */
-    public String readCommand() {
-        System.out.print("> ");
-        ReceivedMessage userInput = reader.read();
-        return userInput.getMessageContent().trim();
-    }
-
-    /**
-     * Sends a message to the user.
-     *
-     * @param message The message to send.
-     */
-    private void sendMessage(Sendable message) {
-        writer.write(message);
-    }
+    public Command readCommand();
 }
