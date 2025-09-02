@@ -1,6 +1,6 @@
 package winnie.ui;
 
-import winnie.chatmessage.Sendable;
+import winnie.command.Command;
 import winnie.task.Task;
 import winnie.tasklist.TaskList;
 
@@ -80,12 +80,5 @@ public interface Ui {
      *
      * @return The user's command.
      */
-    public String readCommand();
-
-    /**
-     * Sends a message to the user.
-     *
-     * @param message The message to send.
-     */
-    public void sendMessage(Sendable message);
+    public Command readCommand();
 }

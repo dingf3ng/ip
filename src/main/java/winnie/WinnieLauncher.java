@@ -1,16 +1,14 @@
 package winnie;
 
 import winnie.command.Command;
-import winnie.exception.WinnieException;
 import winnie.storage.Storage;
 import winnie.tasklist.TaskList;
 import winnie.ui.Cli;
-import winnie.parser.Parser;
 
 /**
  * Main entry point for the Winnie application.
  */
-public class WinnieCli {
+public class WinnieLauncher {
     private Storage storage;
     private TaskList tasks;
     private Cli ui;
@@ -20,7 +18,7 @@ public class WinnieCli {
      *
      * @param filePath Path to the file where tasks are stored.
      */
-    public WinnieCli(String filePath) {
+    public WinnieLauncher(String filePath) {
         ui = new Cli();
         storage = new Storage(filePath);
         try {
@@ -38,15 +36,10 @@ public class WinnieCli {
         ui.showWelcome();
 
         while (true) {
-            try {
-                String fullCommand = ui.readCommand();
-                Command command = Parser.parse(fullCommand);
-                command.execute(tasks, ui, storage);
-                if (command.isExit()) {
-                    break;
-                }
-            } catch (WinnieException e) {
-                ui.showError(e.getMessage());
+            Command command = ui.readCommand();
+            command.execute(tasks, ui, storage);
+            if (command.isExit()) {
+                break;
             }
         }
     }
@@ -57,6 +50,6 @@ public class WinnieCli {
      * @param args Command line arguments.
      */
     public static void main(String[] args) {
-        new WinnieCli("./data/winnie.txt").run();
+        new WinnieLauncher("./data/winnie.txt").run();
     }
 }

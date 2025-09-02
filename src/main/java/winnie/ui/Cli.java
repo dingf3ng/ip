@@ -1,17 +1,20 @@
 package winnie.ui;
 
-import winnie.chatmessage.ReceivedMessage;
-import winnie.chatmessage.Sendable;
-import winnie.clitool.CliReader;
-import winnie.clitool.CliWriter;
+import winnie.chatmessage.Readable;
 import winnie.task.Task;
 import winnie.tasklist.TaskList;
+import winnie.uitool.CliReader;
+import winnie.uitool.CliWriter;
 import winnie.chatmessage.GoodByeMessage;
 import winnie.chatmessage.GreetingMessage;
 import winnie.chatmessage.TaskListMessage;
 import winnie.chatmessage.TaskAddedMessage;
 import winnie.chatmessage.MarkTaskMessage;
 import winnie.chatmessage.UnmarkTaskMessage;
+import winnie.command.Command;
+import winnie.command.UnknownCommand;
+import winnie.exception.WinnieException;
+import winnie.parser.Parser;
 import winnie.chatmessage.DeleteTaskMessage;
 import winnie.chatmessage.ErrorMessage;
 import winnie.chatmessage.FoundTasksMessage;
@@ -20,6 +23,7 @@ import winnie.chatmessage.FoundTasksMessage;
  * CLI class for handling input and output.
  */
 public class Cli implements Ui {
+
     private CliWriter writer;
     private CliReader reader;
 
@@ -53,42 +57,42 @@ public class Cli implements Ui {
                     %%%
                 """;
         System.out.println("Hello from\n" + logo);
-        sendMessage(new GreetingMessage());
+        writer.write(new GreetingMessage());
     }
 
     @Override
     public void showGoodbye() {
-        sendMessage(new GoodByeMessage());
+        writer.write(new GoodByeMessage());
     }
 
     @Override
     public void showTaskList(TaskList tasks) {
-        sendMessage(new TaskListMessage(tasks));
+        writer.write(new TaskListMessage(tasks));
     }
 
     @Override
     public void showTaskAdded(Task task, int taskCount) {
-        sendMessage(new TaskAddedMessage(task, taskCount));
+        writer.write(new TaskAddedMessage(task, taskCount));
     }
 
     @Override
     public void showTaskMarked(Task task) {
-        sendMessage(new MarkTaskMessage(task));
+        writer.write(new MarkTaskMessage(task));
     }
 
     @Override
     public void showTaskUnmarked(Task task) {
-        sendMessage(new UnmarkTaskMessage(task));
+        writer.write(new UnmarkTaskMessage(task));
     }
 
     @Override
     public void showTaskDeleted(Task task, int taskCount) {
-        sendMessage(new DeleteTaskMessage(task, taskCount));
+        writer.write(new DeleteTaskMessage(task, taskCount));
     }
 
     @Override
     public void showError(String errorMessage) {
-        sendMessage(new ErrorMessage(errorMessage));
+        writer.write(new ErrorMessage(errorMessage));
     }
 
     @Override
@@ -98,18 +102,20 @@ public class Cli implements Ui {
 
     @Override
     public void showFoundTasks(TaskList foundTasks) {
-        sendMessage(new FoundTasksMessage(foundTasks));
+        writer.write(new FoundTasksMessage(foundTasks));
     }
 
     @Override
-    public String readCommand() {
+    public Command readCommand() {
         System.out.print("> ");
-        ReceivedMessage userInput = reader.read();
-        return userInput.getMessageContent().trim();
-    }
-
-    @Override
-    public void sendMessage(Sendable message) {
-        writer.write(message);
+        Readable userInput = reader.read();
+        Command command;
+        try {
+            command = Parser.parse(userInput.getMessageContent().trim());
+        } catch (WinnieException e) {
+            showError(e.getMessage());
+            return new UnknownCommand();
+        }
+        return command;
     }
 }
