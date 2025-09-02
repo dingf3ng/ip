@@ -7,20 +7,20 @@ import winnie.ui.Ui;
 
 public class DeadlineCommand extends Command {
     private String description;
-    private String by;
+    private String deadline;
 
-    public DeadlineCommand(String description, String by) {
+    public DeadlineCommand(String description, String deadline) {
         this.description = description;
-        this.by = by;
+        this.deadline = deadline;
     }
 
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         try {
-            Deadline deadline = new Deadline(description, by);
+            Deadline deadline = new Deadline(description, this.deadline);
             tasks.addTask(deadline);
             ui.showTaskAdded(deadline, tasks.getTaskCount());
-            storage.saveTasks(tasks);
+            storage.saveTasksToFile(tasks);
         } catch (Exception e) {
             ui.showError(e.getMessage());
         }

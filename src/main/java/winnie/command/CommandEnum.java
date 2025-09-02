@@ -1,5 +1,8 @@
 package winnie.command;
 
+/**
+ * The enum type that represents the different types of commands.
+ */
 public enum CommandEnum {
     BYE("bye"),
     LIST("list"),

@@ -25,7 +25,7 @@ public class UnmarkCommand extends Command {
             }
             Task unmarkedTask = tasks.unmarkTask(taskNumber - 1);
             ui.showTaskUnmarked(unmarkedTask);
-            storage.saveTasks(tasks);
+            storage.saveTasksToFile(tasks);
         } catch (Exception e) {
             ui.showError(e.getMessage());
         }

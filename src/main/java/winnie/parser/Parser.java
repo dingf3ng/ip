@@ -173,12 +173,12 @@ public class Parser {
         if (commandInput.trim().equals("find")) {
             throw new WinnieException("Please specify a keyword to search for. Example: find book");
         }
-        
+
         String keyword = commandInput.substring(4).trim();
         if (keyword.isEmpty()) {
             throw new WinnieException("Please specify a keyword to search for. Example: find book");
         }
-        
+
         return new FindCommand(keyword);
     }
 }

@@ -21,7 +21,7 @@ public class MarkCommand extends Command {
             }
             Task markedTask = tasks.markTask(taskNumber - 1);
             ui.showTaskMarked(markedTask);
-            storage.saveTasks(tasks);
+            storage.saveTasksToFile(tasks);
         } catch (Exception e) {
             ui.showError(e.getMessage());
         }

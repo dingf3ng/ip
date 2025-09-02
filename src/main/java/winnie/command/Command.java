@@ -4,6 +4,9 @@ import winnie.storage.Storage;
 import winnie.tasklist.TaskList;
 import winnie.ui.Ui;
 
+/**
+ * Represents a command that can be executed.
+ */
 public abstract class Command {
 
     /**

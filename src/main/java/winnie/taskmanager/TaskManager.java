@@ -27,7 +27,7 @@ public class TaskManager {
      */
     private void saveTasks() {
         try {
-            storage.saveTasks(tasks);
+            storage.saveTasksToFile(tasks);
         } catch (IOException e) {
             System.err.println("Error saving tasks: " + e.getMessage());
         }

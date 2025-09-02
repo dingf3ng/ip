@@ -36,7 +36,7 @@ public class Storage {
      * @param tasks The task list to save.
      * @throws IOException If an I/O error occurs.
      */
-    public void saveTasks(TaskList tasks) throws IOException {
+    public void saveTasksToFile(TaskList tasks) throws IOException {
         File file = new File(filePath);
         File parentDir = file.getParentFile();
 
