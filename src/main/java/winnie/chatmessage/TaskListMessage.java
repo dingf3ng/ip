@@ -2,6 +2,9 @@ package winnie.chatmessage;
 
 import winnie.tasklist.TaskList;
 
+/**
+ * Message indicating the current list of tasks.
+ */
 public class TaskListMessage implements Sendable {
     private final TaskList tasks;
 
