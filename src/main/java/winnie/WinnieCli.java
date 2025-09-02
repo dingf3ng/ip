@@ -4,24 +4,24 @@ import winnie.command.Command;
 import winnie.exception.WinnieException;
 import winnie.storage.Storage;
 import winnie.tasklist.TaskList;
-import winnie.ui.Ui;
+import winnie.ui.Cli;
 import winnie.parser.Parser;
 
 /**
  * Main entry point for the Winnie application.
  */
-public class Winnie {
+public class WinnieCli {
     private Storage storage;
     private TaskList tasks;
-    private Ui ui;
+    private Cli ui;
 
     /**
      * Constructor for the Winnie application.
      *
      * @param filePath Path to the file where tasks are stored.
      */
-    public Winnie(String filePath) {
-        ui = new Ui();
+    public WinnieCli(String filePath) {
+        ui = new Cli();
         storage = new Storage(filePath);
         try {
             tasks = storage.loadTasks();
@@ -57,6 +57,6 @@ public class Winnie {
      * @param args Command line arguments.
      */
     public static void main(String[] args) {
-        new Winnie("./data/winnie.txt").run();
+        new WinnieCli("./data/winnie.txt").run();
     }
 }
