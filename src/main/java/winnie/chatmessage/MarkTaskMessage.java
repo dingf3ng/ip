@@ -2,6 +2,9 @@ package winnie.chatmessage;
 
 import winnie.task.Task;
 
+/**
+ * Message indicating that a task has been marked as done.
+ */
 public class MarkTaskMessage implements Sendable {
     private final Task task;
 
