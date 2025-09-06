@@ -1,13 +1,16 @@
 package winnie.task;
 
+import java.time.LocalDateTime;
+
 /**
  * Represents a task.
  */
 public abstract class Task {
 
-    protected String description;
-    protected boolean isDone;
-    protected TaskEnum taskType;
+    private String description;
+    private boolean isDone;
+    private TaskEnum taskType;
+    private LocalDateTime snoozeUntil;
 
     /**
      * Creates a task.
@@ -20,6 +23,7 @@ public abstract class Task {
         this.description = description;
         this.isDone = false;
         this.taskType = taskType;
+        this.snoozeUntil = null;
     }
 
     /**
@@ -81,8 +85,47 @@ public abstract class Task {
         return taskType;
     }
 
+    /**
+     * Snoozes the task until the specified date and time.
+     *
+     * @param snoozeUntil The date and time until when to snooze the task.
+     */
+    public void snooze(LocalDateTime snoozeUntil) {
+        assert snoozeUntil != null : "Snooze time cannot be null";
+        this.snoozeUntil = snoozeUntil;
+    }
+
+    /**
+     * Removes the snooze from the task.
+     */
+    public void unsnooze() {
+        this.snoozeUntil = null;
+    }
+
+    /**
+     * Checks if the task is currently snoozed.
+     *
+     * @return True if the task is snoozed, false otherwise.
+     */
+    public boolean isSnoozed() {
+        return snoozeUntil != null && LocalDateTime.now().isBefore(snoozeUntil);
+    }
+
+    /**
+     * Gets the snooze until date and time.
+     *
+     * @return The snooze until date and time, or null if not snoozed.
+     */
+    public LocalDateTime getSnoozeUntil() {
+        return snoozeUntil;
+    }
+
     @Override
     public String toString() {
-        return getTypeIcon() + getStatusIcon() + " " + description;
+        String baseString = getTypeIcon() + getStatusIcon() + " " + getDescription();
+        if (isSnoozed()) {
+            return baseString + " [SNOOZED]";
+        }
+        return baseString;
     }
 }

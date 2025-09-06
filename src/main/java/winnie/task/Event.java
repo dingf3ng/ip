@@ -60,7 +60,7 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return getTypeIcon() + getStatusIcon() + " " + description + " (from: " +
+        return getTypeIcon() + getStatusIcon() + " " + getDescription() + " (from: " +
                 DateTimeUtil.formatForDisplay(from) + " to: " + DateTimeUtil.formatForDisplay(to) + ")";
     }
 }

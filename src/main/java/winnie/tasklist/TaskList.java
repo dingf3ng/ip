@@ -114,6 +114,36 @@ public class TaskList {
     }
 
     /**
+     * Returns a TaskList containing only the active (non-snoozed) tasks.
+     *
+     * @return A TaskList containing active tasks.
+     */
+    public TaskList getActiveTasks() {
+        TaskList activeTasks = new TaskList();
+        for (Task task : tasks) {
+            if (!task.isSnoozed()) {
+                activeTasks.addTask(task);
+            }
+        }
+        return activeTasks;
+    }
+
+    /**
+     * Returns a TaskList containing only the snoozed tasks.
+     *
+     * @return A TaskList containing snoozed tasks.
+     */
+    public TaskList getSnoozedTasks() {
+        TaskList snoozedTasks = new TaskList();
+        for (Task task : tasks) {
+            if (task.isSnoozed()) {
+                snoozedTasks.addTask(task);
+            }
+        }
+        return snoozedTasks;
+    }
+
+    /**
      * Returns a copy of the tasks in the task list. This should only be used
      * for testing purposes.
      */
