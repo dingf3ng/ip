@@ -30,13 +30,13 @@ public class Event extends Task {
      *
      * @param description The description of the task.
      * @param fromString  The start date and time as a string.
-     * @param toString    The end date and time as a string.
+     * @param tostring    The end date and time as a string.
      * @throws InvalidDateTimeException If the date and time strings are invalid.
      */
-    public Event(String description, String fromString, String toString) throws InvalidDateTimeException {
+    public Event(String description, String fromString, String tostring) throws InvalidDateTimeException {
         super(description, TaskEnum.EVENT);
         this.from = DateTimeUtil.parseDateTime(fromString);
-        this.to = DateTimeUtil.parseDateTime(toString);
+        this.to = DateTimeUtil.parseDateTime(tostring);
     }
 
     /**

@@ -19,6 +19,9 @@ import winnie.util.DateTimeUtil;
  */
 public class Storage {
 
+    private static final String FIELD_SEPARATOR = " | ";
+    private static final String TIME_RANGE_SEPARATOR = " to ";
+    
     private String filePath;
 
     /**
@@ -94,21 +97,21 @@ public class Storage {
         switch (task.getTaskType()) {
             case TODO:
                 return typeStr
-                        + " | " + statusStr
-                        + " | " + task.getDescription();
+                        + FIELD_SEPARATOR + statusStr
+                        + FIELD_SEPARATOR + task.getDescription();
             case DEADLINE:
                 Deadline deadline = (Deadline) task;
                 return typeStr
-                        + " | " + statusStr
-                        + " | " + task.getDescription()
-                        + " | " + DateTimeUtil.formatForStorage(deadline.getBy());
+                        + FIELD_SEPARATOR + statusStr
+                        + FIELD_SEPARATOR + task.getDescription()
+                        + FIELD_SEPARATOR + DateTimeUtil.formatForStorage(deadline.getBy());
             case EVENT:
                 Event event = (Event) task;
                 return typeStr
-                        + " | " + statusStr
-                        + " | " + task.getDescription()
-                        + " | " + DateTimeUtil.formatForStorage(event.getFrom())
-                        + " to " + DateTimeUtil.formatForStorage(event.getTo());
+                        + FIELD_SEPARATOR + statusStr
+                        + FIELD_SEPARATOR + task.getDescription()
+                        + FIELD_SEPARATOR + DateTimeUtil.formatForStorage(event.getFrom())
+                        + TIME_RANGE_SEPARATOR + DateTimeUtil.formatForStorage(event.getTo());
             default:
                 return "";
         }
@@ -143,7 +146,7 @@ public class Storage {
                 if (parts.length < 4) {
                     throw new Exception("Missing event time");
                 }
-                String[] timeParts = parts[3].trim().split(" to ");
+                String[] timeParts = parts[3].trim().split(TIME_RANGE_SEPARATOR);
                 if (timeParts.length != 2) {
                     throw new Exception("Invalid event time format");
                 }
