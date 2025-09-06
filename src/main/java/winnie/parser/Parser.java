@@ -10,6 +10,14 @@ import winnie.exception.MissingTimeException;
  */
 public class Parser {
 
+    private static final int MARK_COMMAND_LENGTH = 4;
+    private static final int UNMARK_COMMAND_LENGTH = 6;
+    private static final int DELETE_COMMAND_LENGTH = 6;
+    private static final int TODO_COMMAND_LENGTH = 4;
+    private static final int DEADLINE_COMMAND_LENGTH = 8;
+    private static final int EVENT_COMMAND_LENGTH = 5;
+    private static final int FIND_COMMAND_LENGTH = 4;
+
     /**
      * Parses the user input into a command.
      *
@@ -52,12 +60,10 @@ public class Parser {
     }
 
     private static Command parseMarkCommand(String commandInput) throws WinnieException {
-        final int COMMAND_LENGTH = 4; // Length of "mark"
-
         if (commandInput.trim().equals("mark")) {
             throw new WinnieException("Please specify which task number to mark. Example: mark 1");
         }
-        String numberStr = commandInput.substring(COMMAND_LENGTH + 1).trim();
+        String numberStr = commandInput.substring(MARK_COMMAND_LENGTH + 1).trim();
         if (numberStr.isEmpty()) {
             throw new WinnieException("Please specify which task number to mark. Example: mark 1");
         }
@@ -73,7 +79,7 @@ public class Parser {
         if (commandInput.trim().equals("unmark")) {
             throw new WinnieException("Please specify which task number to unmark. Example: unmark 1");
         }
-        String numberStr = commandInput.substring(7).trim();
+        String numberStr = commandInput.substring(UNMARK_COMMAND_LENGTH + 1).trim();
         if (numberStr.isEmpty()) {
             throw new WinnieException("Please specify which task number to unmark. Example: unmark 1");
         }
@@ -89,7 +95,7 @@ public class Parser {
         if (commandInput.trim().equals("delete")) {
             throw new WinnieException("Please specify which task number to delete. Example: delete 1");
         }
-        String numberStr = commandInput.substring(7).trim();
+        String numberStr = commandInput.substring(DELETE_COMMAND_LENGTH + 1).trim();
         if (numberStr.isEmpty()) {
             throw new WinnieException("Please specify which task number to delete. Example: delete 1");
         }
@@ -105,7 +111,7 @@ public class Parser {
         if (commandInput.trim().equals("todo")) {
             throw new EmptyDescriptionException("todo");
         }
-        String description = commandInput.substring(4).trim();
+        String description = commandInput.substring(TODO_COMMAND_LENGTH).trim();
         if (description.isEmpty()) {
             throw new EmptyDescriptionException("todo");
         }
@@ -117,7 +123,7 @@ public class Parser {
             throw new EmptyDescriptionException("deadline");
         }
 
-        String args = commandInput.substring(8).trim();
+        String args = commandInput.substring(DEADLINE_COMMAND_LENGTH).trim();
         if (args.isEmpty()) {
             throw new EmptyDescriptionException("deadline");
         }
@@ -145,7 +151,7 @@ public class Parser {
             throw new EmptyDescriptionException("event");
         }
 
-        String args = commandInput.substring(5).trim();
+        String args = commandInput.substring(EVENT_COMMAND_LENGTH).trim();
         if (args.isEmpty()) {
             throw new EmptyDescriptionException("event");
         }
@@ -176,7 +182,7 @@ public class Parser {
             throw new WinnieException("Please specify a keyword to search for. Example: find book");
         }
 
-        String keyword = commandInput.substring(4).trim();
+        String keyword = commandInput.substring(FIND_COMMAND_LENGTH).trim();
         if (keyword.isEmpty()) {
             throw new WinnieException("Please specify a keyword to search for. Example: find book");
         }
