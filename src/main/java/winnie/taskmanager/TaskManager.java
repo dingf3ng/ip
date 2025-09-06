@@ -18,7 +18,7 @@ public class TaskManager {
      */
     public TaskManager() {
         this.tasks = new TaskList();
-        this.storage = new Storage("./data/duke.txt");
+        this.storage = new Storage("./data/winnie.txt");
         loadTasks();
     }
 
