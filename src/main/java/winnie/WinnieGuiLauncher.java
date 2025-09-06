@@ -2,7 +2,6 @@ package winnie;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import winnie.command.Command;
 import winnie.storage.Storage;
 import winnie.tasklist.TaskList;
 import winnie.ui.Gui;

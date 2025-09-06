@@ -3,7 +3,6 @@ package winnie.ui;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -26,7 +25,7 @@ import winnie.chatmessage.ErrorMessage;
 import winnie.chatmessage.FoundTasksMessage;
 import winnie.chatmessage.Readable;
 import winnie.command.Command;
-import winnie.command.UnknownCommand;
+import winnie.command.VoidCommand;
 import winnie.exception.WinnieException;
 import winnie.parser.Parser;
 
@@ -39,14 +38,14 @@ public class Gui extends Application implements Ui {
     private TextField userInput;
     private Button sendButton;
     private Scene scene;
-    
+
     private TaskList tasks;
     private Storage storage;
 
     public Gui() {
         // Initialize later in start method when JavaFX components are created
     }
-    
+
     public void setData(TaskList tasks, Storage storage) {
         this.tasks = tasks;
         this.storage = storage;
@@ -95,7 +94,7 @@ public class Gui extends Application implements Ui {
         // Show welcome message
         showWelcome();
     }
-    
+
     private void handleCommand() {
         Command command = readCommand();
         command.execute(tasks, this, storage);
@@ -148,12 +147,11 @@ public class Gui extends Application implements Ui {
     public Command readCommand() {
         Readable userInput = guiReader.read();
         try {
-            Command command = Parser.parse(userInput.getMessageContent().trim());
-            return command;
+            return Parser.parse(userInput.getMessageContent().trim());
         } catch (WinnieException e) {
             showError(e.getMessage());
-            return new UnknownCommand();
         }
+        return new VoidCommand();
     }
 
     @Override

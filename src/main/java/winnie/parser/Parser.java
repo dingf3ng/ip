@@ -40,8 +40,8 @@ public class Parser {
                 return parseEventCommand(fullCommand);
             case FIND:
                 return parseFindCommand(fullCommand);
-            case UNKNOWN:
             default:
+            case UNKNOWN:
                 return new UnknownCommand();
         }
     }
@@ -52,10 +52,12 @@ public class Parser {
     }
 
     private static Command parseMarkCommand(String commandInput) throws WinnieException {
+        final int COMMAND_LENGTH = 4; // Length of "mark"
+
         if (commandInput.trim().equals("mark")) {
             throw new WinnieException("Please specify which task number to mark. Example: mark 1");
         }
-        String numberStr = commandInput.substring(5).trim();
+        String numberStr = commandInput.substring(COMMAND_LENGTH + 1).trim();
         if (numberStr.isEmpty()) {
             throw new WinnieException("Please specify which task number to mark. Example: mark 1");
         }

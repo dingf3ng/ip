@@ -12,7 +12,7 @@ import winnie.chatmessage.TaskAddedMessage;
 import winnie.chatmessage.MarkTaskMessage;
 import winnie.chatmessage.UnmarkTaskMessage;
 import winnie.command.Command;
-import winnie.command.UnknownCommand;
+import winnie.command.VoidCommand;
 import winnie.exception.WinnieException;
 import winnie.parser.Parser;
 import winnie.chatmessage.DeleteTaskMessage;
@@ -109,13 +109,11 @@ public class Cli implements Ui {
     public Command readCommand() {
         System.out.print("> ");
         Readable userInput = reader.read();
-        Command command;
         try {
-            command = Parser.parse(userInput.getMessageContent().trim());
+            return Parser.parse(userInput.getMessageContent().trim());
         } catch (WinnieException e) {
             showError(e.getMessage());
-            return new UnknownCommand();
         }
-        return command;
+        return new VoidCommand();
     }
 }
