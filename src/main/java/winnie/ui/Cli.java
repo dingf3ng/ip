@@ -1,8 +1,11 @@
 package winnie.ui;
 
+import java.time.LocalDateTime;
+
 import winnie.chatmessage.Readable;
 import winnie.task.Task;
 import winnie.tasklist.TaskList;
+import winnie.util.DateTimeUtil;
 import winnie.uitool.CliReader;
 import winnie.uitool.CliWriter;
 import winnie.chatmessage.GoodByeMessage;
@@ -103,6 +106,12 @@ public class Cli implements Ui {
     @Override
     public void showFoundTasks(TaskList foundTasks) {
         writer.write(new FoundTasksMessage(foundTasks));
+    }
+
+    @Override
+    public void showTaskSnoozed(Task task, LocalDateTime snoozeUntil) {
+        String message = "Nice! I've snoozed this task:\n  " + task.toString() + "\nIt will reappear at: " + DateTimeUtil.formatForDisplay(snoozeUntil);
+        writer.write(new ErrorMessage(message));
     }
 
     @Override

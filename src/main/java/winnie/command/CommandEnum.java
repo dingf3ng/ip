@@ -13,6 +13,7 @@ public enum CommandEnum {
     DEADLINE("deadline"),
     EVENT("event"),
     FIND("find"),
+    SNOOZE("snooze"),
     UNKNOWN("");
 
     private final String commandWord;

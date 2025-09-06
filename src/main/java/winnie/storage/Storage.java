@@ -93,25 +93,31 @@ public class Storage {
         String statusStr = task.isDone() ? "1" : "0";
         String typeStr = task.getTaskType()
                 .toString().substring(0, 1);
+        String snoozeStr = task.getSnoozeUntil() != null 
+                ? DateTimeUtil.formatForStorage(task.getSnoozeUntil()) 
+                : "";
 
         switch (task.getTaskType()) {
             case TODO:
                 return typeStr
                         + FIELD_SEPARATOR + statusStr
-                        + FIELD_SEPARATOR + task.getDescription();
+                        + FIELD_SEPARATOR + task.getDescription()
+                        + FIELD_SEPARATOR + snoozeStr;
             case DEADLINE:
                 Deadline deadline = (Deadline) task;
                 return typeStr
                         + FIELD_SEPARATOR + statusStr
                         + FIELD_SEPARATOR + task.getDescription()
-                        + FIELD_SEPARATOR + DateTimeUtil.formatForStorage(deadline.getBy());
+                        + FIELD_SEPARATOR + DateTimeUtil.formatForStorage(deadline.getBy())
+                        + FIELD_SEPARATOR + snoozeStr;
             case EVENT:
                 Event event = (Event) task;
                 return typeStr
                         + FIELD_SEPARATOR + statusStr
                         + FIELD_SEPARATOR + task.getDescription()
                         + FIELD_SEPARATOR + DateTimeUtil.formatForStorage(event.getFrom())
-                        + TIME_RANGE_SEPARATOR + DateTimeUtil.formatForStorage(event.getTo());
+                        + TIME_RANGE_SEPARATOR + DateTimeUtil.formatForStorage(event.getTo())
+                        + FIELD_SEPARATOR + snoozeStr;
             default:
                 return "";
         }
@@ -134,6 +140,10 @@ public class Storage {
         switch (type.toUpperCase()) {
             case "T":
                 task = new Todo(description);
+                if (parts.length > 3 && !parts[3].trim().isEmpty()) {
+                    LocalDateTime snoozeTime = DateTimeUtil.parseFromStorage(parts[3].trim());
+                    task.snooze(snoozeTime);
+                }
                 break;
             case "D":
                 if (parts.length < 4) {
@@ -142,6 +152,10 @@ public class Storage {
                 String by = parts[3].trim();
                 LocalDateTime deadlineTime = DateTimeUtil.parseFromStorage(by);
                 task = new Deadline(description, deadlineTime);
+                if (parts.length > 4 && !parts[4].trim().isEmpty()) {
+                    LocalDateTime snoozeTime = DateTimeUtil.parseFromStorage(parts[4].trim());
+                    task.snooze(snoozeTime);
+                }
                 break;
             case "E":
                 if (parts.length < 4) {
@@ -156,6 +170,10 @@ public class Storage {
                 LocalDateTime fromTime = DateTimeUtil.parseFromStorage(from);
                 LocalDateTime toTime = DateTimeUtil.parseFromStorage(to);
                 task = new Event(description, fromTime, toTime);
+                if (parts.length > 4 && !parts[4].trim().isEmpty()) {
+                    LocalDateTime snoozeTime = DateTimeUtil.parseFromStorage(parts[4].trim());
+                    task.snooze(snoozeTime);
+                }
                 break;
             default:
                 throw new Exception("Unknown task type: " + type);

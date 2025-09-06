@@ -47,7 +47,7 @@ public class Deadline extends Task {
     @Override
     public String toString() {
         return getTypeIcon()
-                + getStatusIcon() + " " + description
+                + getStatusIcon() + " " + getDescription()
                 + " (by: " + DateTimeUtil.formatForDisplay(by) + ")";
     }
 }

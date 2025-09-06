@@ -17,6 +17,7 @@ public class Parser {
     private static final int DEADLINE_COMMAND_LENGTH = 8;
     private static final int EVENT_COMMAND_LENGTH = 5;
     private static final int FIND_COMMAND_LENGTH = 4;
+    private static final int SNOOZE_COMMAND_LENGTH = 6;
 
     /**
      * Parses the user input into a command.
@@ -49,6 +50,8 @@ public class Parser {
                 return parseEventCommand(fullCommand);
             case FIND:
                 return parseFindCommand(fullCommand);
+            case SNOOZE:
+                return parseSnoozeCommand(fullCommand);
             default:
             case UNKNOWN:
                 return new UnknownCommand();
@@ -189,5 +192,29 @@ public class Parser {
         }
 
         return new FindCommand(keyword);
+    }
+
+    private static Command parseSnoozeCommand(String commandInput) throws WinnieException {
+        if (commandInput.trim().equals("snooze")) {
+            throw new WinnieException("Please specify a task number and snooze time. Example: snooze 1 2023-12-25 18:00");
+        }
+
+        String args = commandInput.substring(SNOOZE_COMMAND_LENGTH).trim();
+        if (args.isEmpty()) {
+            throw new WinnieException("Please specify a task number and snooze time. Example: snooze 1 2023-12-25 18:00");
+        }
+
+        String[] parts = args.split("\\s+", 2);
+        if (parts.length < 2) {
+            throw new WinnieException("Please specify both task number and snooze time. Example: snooze 1 2023-12-25 18:00");
+        }
+
+        try {
+            int taskNumber = Integer.parseInt(parts[0]);
+            String snoozeUntil = parts[1];
+            return new SnoozeCommand(taskNumber, snoozeUntil);
+        } catch (NumberFormatException e) {
+            throw new WinnieException("Task number must be a valid number. You entered: " + parts[0]);
+        }
     }
 }

@@ -1,5 +1,7 @@
 package winnie.ui;
 
+import java.time.LocalDateTime;
+
 import winnie.command.Command;
 import winnie.task.Task;
 import winnie.tasklist.TaskList;
@@ -74,6 +76,14 @@ public interface Ui {
      * @param foundTasks The TaskList containing matching tasks.
      */
     public void showFoundTasks(TaskList foundTasks);
+
+    /**
+     * Shows a message when a task is snoozed.
+     *
+     * @param task        The task that was snoozed.
+     * @param snoozeUntil The date and time until when the task is snoozed.
+     */
+    public void showTaskSnoozed(Task task, LocalDateTime snoozeUntil);
 
     /**
      * Reads a command from the user.

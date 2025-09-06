@@ -1,5 +1,7 @@
 package winnie.ui;
 
+import java.time.LocalDateTime;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,6 +14,7 @@ import javafx.stage.Stage;
 import winnie.storage.Storage;
 import winnie.task.Task;
 import winnie.tasklist.TaskList;
+import winnie.util.DateTimeUtil;
 import winnie.uitool.GuiReader;
 import winnie.uitool.GuiWriter;
 import winnie.chatmessage.GoodByeMessage;
@@ -162,5 +165,11 @@ public class Gui extends Application implements Ui {
     @Override
     public void showLoadingError() {
         showError("Error loading tasks from file. Starting with empty task list.");
+    }
+
+    @Override
+    public void showTaskSnoozed(Task task, LocalDateTime snoozeUntil) {
+        String message = "Nice! I've snoozed this task:\n  " + task.toString() + "\nIt will reappear at: " + DateTimeUtil.formatForDisplay(snoozeUntil);
+        guiWriter.write(new ErrorMessage(message));
     }
 }
