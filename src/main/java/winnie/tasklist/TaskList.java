@@ -40,11 +40,12 @@ public class TaskList {
      * @return The marked task, or null if the index is invalid.
      */
     public Task markTask(int index) {
-        if (index >= 0 && index < tasks.size()) {
-            tasks.get(index).markAsDone();
-            return tasks.get(index);
-        }
-        return null;
+        // This assertion will hold since we check the index before calling this method.
+        // Checked using "find all references" in IntelliJ, as a static analysis tool.
+        assert index >= 0 && index < tasks.size() : "Task index cannot be negative";
+
+        tasks.get(index).markAsDone();
+        return tasks.get(index);
     }
 
     /**

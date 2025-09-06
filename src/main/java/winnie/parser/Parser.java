@@ -18,6 +18,7 @@ public class Parser {
      * @throws WinnieException If the command is invalid.
      */
     public static Command parse(String fullCommand) throws WinnieException {
+        assert fullCommand != null : "Command string cannot be null";
         String commandWord = getCommandWord(fullCommand);
         CommandEnum command = CommandEnum.fromString(commandWord);
 

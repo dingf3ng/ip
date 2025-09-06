@@ -22,6 +22,7 @@ public class DateTimeUtil {
      * @throws InvalidDateTimeException If the date-time string is invalid.
      */
     public static LocalDateTime parseDateTime(String dateTimeString) throws InvalidDateTimeException {
+        assert dateTimeString != null : "DateTime string cannot be null";
         dateTimeString = dateTimeString.trim();
 
         try {

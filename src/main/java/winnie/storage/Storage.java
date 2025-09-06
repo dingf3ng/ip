@@ -115,6 +115,7 @@ public class Storage {
     }
 
     private Task persistentStringToTask(String data) throws Exception {
+        assert data != null && !data.trim().isEmpty() : "Data string must not be null or empty";
         String[] parts = data.split(" \\| ");
         if (parts.length < 3) {
             throw new Exception("Invalid data format");

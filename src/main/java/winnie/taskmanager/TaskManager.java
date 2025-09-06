@@ -53,6 +53,7 @@ public class TaskManager {
      *
      */
     public void addTask(Task task) {
+        assert task != null : "Task cannot be null when adding to TaskManager";
         tasks.addTask(task);
         saveTasks();
     }
