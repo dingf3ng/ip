@@ -16,6 +16,7 @@ public abstract class Task {
      * @param taskType    The type of the task.
      */
     public Task(String description, TaskEnum taskType) {
+        assert description != null && !description.trim().isEmpty() : "Task description cannot be null or empty";
         this.description = description;
         this.isDone = false;
         this.taskType = taskType;
