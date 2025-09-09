@@ -7,7 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -37,6 +39,7 @@ public class Gui extends Application implements Ui {
     private GuiWriter guiWriter;
     private GuiReader guiReader;
 
+    private ScrollPane scrollPane;
     private VBox dialogContainer;
     private TextField userInput;
     private Button sendButton;
@@ -44,6 +47,9 @@ public class Gui extends Application implements Ui {
 
     private TaskList tasks;
     private Storage storage;
+
+    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
+    private Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
 
     public Gui() {
         // Initialize later in start method when JavaFX components are created
@@ -56,13 +62,16 @@ public class Gui extends Application implements Ui {
 
     @Override
     public void start(Stage stage) {
-
-        ScrollPane scrollPane = new ScrollPane();
+        // Setting up required components
+        scrollPane = new ScrollPane();
         dialogContainer = new VBox();
         scrollPane.setContent(dialogContainer);
 
         userInput = new TextField();
         sendButton = new Button("Send");
+
+        DialogBox dialogBox = DialogBox.getUserDialog("Hello!", userImage);
+        dialogContainer.getChildren().addAll(dialogBox);
 
         AnchorPane mainLayout = new AnchorPane();
         mainLayout.getChildren().addAll(scrollPane, userInput, sendButton);
@@ -71,6 +80,27 @@ public class Gui extends Application implements Ui {
 
         stage.setScene(scene);
         stage.show();
+
+        // Formatting the window to look as expected
+        stage.setTitle("Winnie");
+        stage.setResizable(false);
+        stage.setMinHeight(600.0);
+        stage.setMinWidth(400.0);
+
+        mainLayout.setPrefSize(400.0, 600.0);
+
+        scrollPane.setPrefSize(385, 535);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+
+        scrollPane.setVvalue(1.0);
+        scrollPane.setFitToWidth(true);
+
+        dialogContainer.setPrefHeight(Region.USE_COMPUTED_SIZE);
+
+        userInput.setPrefWidth(325.0);
+
+        sendButton.setPrefWidth(55.0);
 
         AnchorPane.setTopAnchor(scrollPane, 1.0);
 
@@ -81,8 +111,8 @@ public class Gui extends Application implements Ui {
         AnchorPane.setBottomAnchor(userInput, 1.0);
 
         // Initialize GUI components now that they exist
-        this.guiWriter = new GuiWriter(this.dialogContainer);
-        this.guiReader = new GuiReader(this.dialogContainer, this.userInput);
+        this.guiWriter = new GuiWriter(this.dialogContainer, this.dukeImage);
+        this.guiReader = new GuiReader(this.dialogContainer, this.userInput, this.userImage);
 
         sendButton.setOnMouseClicked((event) -> {
             handleCommand();
@@ -169,7 +199,8 @@ public class Gui extends Application implements Ui {
 
     @Override
     public void showTaskSnoozed(Task task, LocalDateTime snoozeUntil) {
-        String message = "Nice! I've snoozed this task:\n  " + task.toString() + "\nIt will reappear at: " + DateTimeUtil.formatForDisplay(snoozeUntil);
+        String message = "Nice! I've snoozed this task:\n  " + task.toString() + "\nIt will reappear at: "
+                + DateTimeUtil.formatForDisplay(snoozeUntil);
         guiWriter.write(new ErrorMessage(message));
     }
 }

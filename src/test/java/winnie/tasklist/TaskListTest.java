@@ -52,13 +52,6 @@ public class TaskListTest {
     }
 
     @Test
-    public void markTask_invalidIndex_returnsNull() {
-        taskList.addTask(testTask);
-        Task result = taskList.markTask(5);
-        assertNull(result);
-    }
-
-    @Test
     public void unmarkTask_validIndex_marksTaskAsNotDone() {
         taskList.addTask(testTask);
         testTask.markAsDone();

@@ -1,5 +1,5 @@
-T | 1 | read book
-E | 0 | meeting | 2024-03-15 10:00 to 2024-03-15 12:00
-T | 1 | sleep
-T | 1 | sp
-T | 0 | lis
+T | 1 | read book | 
+E | 0 | meeting | 2024-03-15 10:00 to 2024-03-15 12:00 | 
+T | 1 | sleep | 
+T | 1 | sp | 
+T | 1 | lis | 

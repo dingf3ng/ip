@@ -1,18 +1,22 @@
 package winnie;
 
+import java.io.IOException;
+
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import winnie.storage.Storage;
 import winnie.tasklist.TaskList;
-import winnie.ui.Gui;
+import winnie.ui.MainWindow;
 
 /**
- * Main GUI launcher for the Winnie application.
+ * A GUI for Winnie using FXML.
  */
 public class WinnieGuiLauncher extends Application {
     private Storage storage;
     private TaskList tasks;
-    private Gui gui;
     private static String filePath;
 
     /**
@@ -32,10 +36,18 @@ public class WinnieGuiLauncher extends Application {
      * Starts the JavaFX application.
      */
     @Override
-    public void start(Stage primaryStage) {
-        gui = new Gui();
-        gui.setData(tasks, storage);
-        gui.start(primaryStage);
+    public void start(Stage stage) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(WinnieGuiLauncher.class.getResource("/view/MainWindow.fxml"));
+            AnchorPane ap = fxmlLoader.load();
+            Scene scene = new Scene(ap);
+            stage.setScene(scene);
+            stage.setTitle("Winnie");
+            fxmlLoader.<MainWindow>getController().setData(tasks, storage);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
