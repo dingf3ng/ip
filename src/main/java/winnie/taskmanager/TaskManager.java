@@ -1,6 +1,7 @@
 package winnie.taskmanager;
 
 import winnie.storage.Storage;
+import winnie.task.Showable;
 import winnie.task.Task;
 import winnie.tasklist.TaskList;
 
@@ -71,7 +72,7 @@ public class TaskManager {
      * @param index The index of the task to mark as done.
      * @return The marked task, or null if the index is invalid.
      */
-    public Task markTask(int index) {
+    public Showable markTask(int index) {
         if (index >= 0 && index < tasks.getTaskCount()) {
             tasks.getTask(index).markAsDone();
             saveTasks();
@@ -86,7 +87,7 @@ public class TaskManager {
      * @param index The index of the task to unmark.
      * @return The unmarked task, or null if the index is invalid.
      */
-    public Task unmarkTask(int index) {
+    public Showable unmarkTask(int index) {
         if (index >= 0 && index < tasks.getTaskCount()) {
             tasks.getTask(index).markAsNotDone();
             saveTasks();
@@ -101,7 +102,7 @@ public class TaskManager {
      * @param index The index of the task to retrieve.
      * @return The task at the specified index, or null if the index is invalid.
      */
-    public Task getTask(int index) {
+    public Showable getTask(int index) {
         if (index >= 0 && index < tasks.getTaskCount()) {
             return tasks.getTask(index);
         }
@@ -114,9 +115,9 @@ public class TaskManager {
      * @param index The index of the task to delete.
      * @return The deleted task, or null if the index is invalid.
      */
-    public Task deleteTask(int index) {
+    public Showable deleteTask(int index) {
         if (index >= 0 && index < tasks.getTaskCount()) {
-            Task deletedTask = tasks.deleteTask(index);
+            Showable deletedTask = tasks.deleteTask(index);
             saveTasks();
             return deletedTask;
         }

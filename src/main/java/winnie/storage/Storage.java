@@ -9,7 +9,10 @@ import java.time.LocalDateTime;
 
 import winnie.task.Deadline;
 import winnie.task.Event;
+import winnie.task.SnoozedWrapper;
 import winnie.task.Task;
+import winnie.task.Taskable;
+import winnie.task.Showable;
 import winnie.task.Todo;
 import winnie.tasklist.TaskList;
 import winnie.util.DateTimeUtil;
@@ -21,7 +24,7 @@ public class Storage {
 
     private static final String FIELD_SEPARATOR = " | ";
     private static final String TIME_RANGE_SEPARATOR = " to ";
-    
+
     private String filePath;
 
     /**
@@ -48,10 +51,8 @@ public class Storage {
         }
 
         FileWriter writer = new FileWriter(file);
-        for (int i = 0; i < tasks.getTaskCount(); i++) {
-            String taskData = taskToPersistentString(tasks.getTask(i));
-            writer.write(taskData + System.lineSeparator());
-        }
+        String taskData = allTasksToPersistentString(tasks.getAllTasks());
+        writer.write(taskData + System.lineSeparator());
         writer.close();
     }
 
@@ -62,11 +63,12 @@ public class Storage {
      * @throws IOException If an I/O error occurs.
      */
     public TaskList loadTasks() throws IOException {
-        ArrayList<Task> tasks = new ArrayList<>();
+        ArrayList<Showable> tasks = new ArrayList<>();
+        ArrayList<SnoozedWrapper> snoozedTasks = new ArrayList<>();
         File file = new File(filePath);
 
         if (!file.exists()) {
-            return new TaskList(tasks);
+            return new TaskList(tasks, snoozedTasks);
         }
 
         Scanner scanner = new Scanner(file);
@@ -74,9 +76,13 @@ public class Storage {
             String line = scanner.nextLine().trim();
             if (!line.isEmpty()) {
                 try {
-                    Task task = persistentStringToTask(line);
+                    Taskable task = persistentStringToTask(line);
                     if (task != null) {
-                        tasks.add(task);
+                        if (task instanceof Showable) {
+                            tasks.add((Showable) task);
+                        } else if (task instanceof SnoozedWrapper) {
+                            snoozedTasks.add((SnoozedWrapper) task);
+                        }
                     }
                 } catch (Exception e) {
                     System.err.println(
@@ -86,15 +92,26 @@ public class Storage {
             }
         }
         scanner.close();
-        return new TaskList(tasks);
+        return new TaskList(tasks, snoozedTasks);
     }
 
-    private String taskToPersistentString(Task task) {
+    private String allTasksToPersistentString(Taskable[] tasks) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < tasks.length; i++) {
+            sb.append(taskToPersistentString(tasks[i]));
+            if (i < tasks.length - 1) {
+                sb.append(System.lineSeparator());
+            }
+        }
+        return sb.toString();
+    }
+
+    private String taskToPersistentString(Taskable task) {
         String statusStr = task.isDone() ? "1" : "0";
         String typeStr = task.getTaskType()
                 .toString().substring(0, 1);
-        String snoozeStr = task.getSnoozeUntil() != null 
-                ? DateTimeUtil.formatForStorage(task.getSnoozeUntil()) 
+        String snoozeStr = task instanceof SnoozedWrapper && task.isSnoozed()
+                ? DateTimeUtil.formatForStorage(((SnoozedWrapper) task).getSnoozeUntil())
                 : "";
 
         switch (task.getTaskType()) {
@@ -123,7 +140,7 @@ public class Storage {
         }
     }
 
-    private Task persistentStringToTask(String data) throws Exception {
+    private Taskable persistentStringToTask(String data) throws Exception {
         assert data != null && !data.trim().isEmpty() : "Data string must not be null or empty";
         String[] parts = data.split(" \\| ");
         if (parts.length < 3) {

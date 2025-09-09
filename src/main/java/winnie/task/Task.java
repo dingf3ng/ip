@@ -5,12 +5,10 @@ import java.time.LocalDateTime;
 /**
  * Represents a task.
  */
-public abstract class Task {
+public abstract class Task implements Showable {
 
     private String description;
-    private boolean isDone;
     private TaskEnum taskType;
-    private LocalDateTime snoozeUntil;
 
     /**
      * Creates a task.
@@ -21,9 +19,7 @@ public abstract class Task {
     public Task(String description, TaskEnum taskType) {
         assert description != null && !description.trim().isEmpty() : "Task description cannot be null or empty";
         this.description = description;
-        this.isDone = false;
         this.taskType = taskType;
-        this.snoozeUntil = null;
     }
 
     /**
@@ -41,21 +37,21 @@ public abstract class Task {
      * @return True if the task is done, false otherwise.
      */
     public boolean isDone() {
-        return isDone;
+        return false;
     }
 
     /**
      * Marks the task as done.
      */
-    public void markAsDone() {
-        this.isDone = true;
+    public DoneWrapper markAsDone() {
+        return new DoneWrapper(this);
     }
 
     /**
      * Marks the task as not done.
      */
-    public void markAsNotDone() {
-        this.isDone = false;
+    public Task markAsNotDone() {
+        return this; // Identity, as task is not done
     }
 
     /**
@@ -64,7 +60,7 @@ public abstract class Task {
      * @return The status icon of the task.
      */
     public String getStatusIcon() {
-        return (isDone ? "[X]" : "[ ]");
+        return "[ ]";
     }
 
     /**
@@ -90,42 +86,19 @@ public abstract class Task {
      *
      * @param snoozeUntil The date and time until when to snooze the task.
      */
-    public void snooze(LocalDateTime snoozeUntil) {
+    @Override
+    public SnoozedWrapper snooze(LocalDateTime snoozeUntil) {
         assert snoozeUntil != null : "Snooze time cannot be null";
-        this.snoozeUntil = snoozeUntil;
+        return new SnoozedWrapper(this, snoozeUntil);
     }
 
-    /**
-     * Removes the snooze from the task.
-     */
-    public void unsnooze() {
-        this.snoozeUntil = null;
-    }
-
-    /**
-     * Checks if the task is currently snoozed.
-     *
-     * @return True if the task is snoozed, false otherwise.
-     */
+    @Override
     public boolean isSnoozed() {
-        return snoozeUntil != null && LocalDateTime.now().isBefore(snoozeUntil);
-    }
-
-    /**
-     * Gets the snooze until date and time.
-     *
-     * @return The snooze until date and time, or null if not snoozed.
-     */
-    public LocalDateTime getSnoozeUntil() {
-        return snoozeUntil;
+        return false; // Tasks are not snoozed by default
     }
 
     @Override
     public String toString() {
-        String baseString = getTypeIcon() + getStatusIcon() + " " + getDescription();
-        if (isSnoozed()) {
-            return baseString + " [SNOOZED]";
-        }
-        return baseString;
+        return getTypeIcon() + getStatusIcon() + " " + getDescription();
     }
 }
