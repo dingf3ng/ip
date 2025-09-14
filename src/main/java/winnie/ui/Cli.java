@@ -110,7 +110,8 @@ public class Cli implements Ui {
 
     @Override
     public void showTaskSnoozed(Task task, LocalDateTime snoozeUntil) {
-        String message = "Nice! I've snoozed this task:\n  " + task.toString() + "\nIt will reappear at: " + DateTimeUtil.formatForDisplay(snoozeUntil);
+        String message = "Nice! I've snoozed this task:\n  " + task.toString()
+                + "\nIt will reappear at: " + DateTimeUtil.formatForDisplay(snoozeUntil);
         writer.write(new ErrorMessage(message));
     }
 

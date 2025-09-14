@@ -196,17 +196,20 @@ public class Parser {
 
     private static Command parseSnoozeCommand(String commandInput) throws WinnieException {
         if (commandInput.trim().equals("snooze")) {
-            throw new WinnieException("Please specify a task number and snooze time. Example: snooze 1 2023-12-25 18:00");
+            throw new WinnieException("Please specify a task number and snooze time. "
+                    + "Example: snooze 1 2023-12-25 18:00");
         }
 
         String args = commandInput.substring(SNOOZE_COMMAND_LENGTH).trim();
         if (args.isEmpty()) {
-            throw new WinnieException("Please specify a task number and snooze time. Example: snooze 1 2023-12-25 18:00");
+            throw new WinnieException("Please specify a task number and snooze time. "
+                    + "Example: snooze 1 2023-12-25 18:00");
         }
 
         String[] parts = args.split("\\s+", 2);
         if (parts.length < 2) {
-            throw new WinnieException("Please specify both task number and snooze time. Example: snooze 1 2023-12-25 18:00");
+            throw new WinnieException("Please specify both task number and snooze time. "
+                    + "Example: snooze 1 2023-12-25 18:00");
         }
 
         try {

@@ -36,6 +36,8 @@ public class Storage {
 
     /**
      * Saves the tasks to the storage file.
+     * AI-assisted enhancement: Improved resource management with try-with-resources
+     * to ensure proper file closure and better error handling.
      *
      * @param tasks The task list to save.
      * @throws IOException If an I/O error occurs.
@@ -45,19 +47,24 @@ public class Storage {
         File parentDir = file.getParentFile();
 
         if (parentDir != null && !parentDir.exists()) {
-            parentDir.mkdirs();
+            boolean dirsCreated = parentDir.mkdirs();
+            if (!dirsCreated && !parentDir.exists()) {
+                throw new IOException("Failed to create directory: " + parentDir.getAbsolutePath());
+            }
         }
 
-        FileWriter writer = new FileWriter(file);
-        for (int i = 0; i < tasks.getTaskCount(); i++) {
-            String taskData = taskToPersistentString(tasks.getTask(i));
-            writer.write(taskData + System.lineSeparator());
+        try (FileWriter writer = new FileWriter(file)) {
+            for (int i = 0; i < tasks.getTaskCount(); i++) {
+                String taskData = taskToPersistentString(tasks.getTask(i));
+                writer.write(taskData + System.lineSeparator());
+            }
         }
-        writer.close();
     }
 
     /**
      * Loads the tasks from the storage file.
+     * AI-assisted enhancement: Improved resource management with try-with-resources
+     * and enhanced error reporting for better debugging.
      *
      * @return The task list loaded from the file.
      * @throws IOException If an I/O error occurs.
@@ -70,23 +77,25 @@ public class Storage {
             return new TaskList(tasks);
         }
 
-        Scanner scanner = new Scanner(file);
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine().trim();
-            if (!line.isEmpty()) {
-                try {
-                    Task task = persistentStringToTask(line);
-                    if (task != null) {
-                        tasks.add(task);
+        try (Scanner scanner = new Scanner(file)) {
+            int lineNumber = 0;
+            while (scanner.hasNextLine()) {
+                lineNumber++;
+                String line = scanner.nextLine().trim();
+                if (!line.isEmpty()) {
+                    try {
+                        Task task = persistentStringToTask(line);
+                        if (task != null) {
+                            tasks.add(task);
+                        }
+                    } catch (Exception e) {
+                        System.err.println(
+                                String.format("Warning: Skipping corrupted line %d in data file: %s (Error: %s)",
+                                        lineNumber, line, e.getMessage()));
                     }
-                } catch (Exception e) {
-                    System.err.println(
-                            "Warning: Skipping corrupted line in data file: "
-                                    + line);
                 }
             }
         }
-        scanner.close();
         return new TaskList(tasks);
     }
 
