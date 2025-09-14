@@ -32,29 +32,29 @@ public class Parser {
         CommandEnum command = CommandEnum.fromString(commandWord);
 
         switch (command) {
-            case BYE:
-                return new ByeCommand();
-            case LIST:
-                return new ListCommand();
-            case MARK:
-                return parseMarkCommand(fullCommand);
-            case UNMARK:
-                return parseUnmarkCommand(fullCommand);
-            case DELETE:
-                return parseDeleteCommand(fullCommand);
-            case TODO:
-                return parseTodoCommand(fullCommand);
-            case DEADLINE:
-                return parseDeadlineCommand(fullCommand);
-            case EVENT:
-                return parseEventCommand(fullCommand);
-            case FIND:
-                return parseFindCommand(fullCommand);
-            case SNOOZE:
-                return parseSnoozeCommand(fullCommand);
-            default:
-            case UNKNOWN:
-                return new UnknownCommand();
+        case BYE:
+            return new ByeCommand();
+        case LIST:
+            return new ListCommand();
+        case MARK:
+            return parseMarkCommand(fullCommand);
+        case UNMARK:
+            return parseUnmarkCommand(fullCommand);
+        case DELETE:
+            return parseDeleteCommand(fullCommand);
+        case TODO:
+            return parseTodoCommand(fullCommand);
+        case DEADLINE:
+            return parseDeadlineCommand(fullCommand);
+        case EVENT:
+            return parseEventCommand(fullCommand);
+        case FIND:
+            return parseFindCommand(fullCommand);
+        case SNOOZE:
+            return parseSnoozeCommand(fullCommand);
+        default:
+        case UNKNOWN:
+            return new UnknownCommand();
         }
     }
 

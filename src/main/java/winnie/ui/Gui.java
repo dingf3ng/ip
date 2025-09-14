@@ -49,7 +49,7 @@ public class Gui extends Application implements Ui {
     private Storage storage;
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
+    private Image winnieImage = new Image(this.getClass().getResourceAsStream("/images/DaWinnie.png"));
 
     public Gui() {
         // Initialize later in start method when JavaFX components are created
@@ -111,7 +111,7 @@ public class Gui extends Application implements Ui {
         AnchorPane.setBottomAnchor(userInput, 1.0);
 
         // Initialize GUI components now that they exist
-        this.guiWriter = new GuiWriter(this.dialogContainer, this.dukeImage);
+        this.guiWriter = new GuiWriter(this.dialogContainer, this.winnieImage);
         this.guiReader = new GuiReader(this.dialogContainer, this.userInput, this.userImage);
 
         sendButton.setOnMouseClicked((event) -> {

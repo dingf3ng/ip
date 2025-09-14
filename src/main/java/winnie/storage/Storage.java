@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 
+import winnie.exception.WinnieException;
 import winnie.task.Deadline;
 import winnie.task.Event;
 import winnie.task.Task;
@@ -98,36 +99,36 @@ public class Storage {
                 : "";
 
         switch (task.getTaskType()) {
-            case TODO:
-                return typeStr
-                        + FIELD_SEPARATOR + statusStr
-                        + FIELD_SEPARATOR + task.getDescription()
-                        + FIELD_SEPARATOR + snoozeStr;
-            case DEADLINE:
-                Deadline deadline = (Deadline) task;
-                return typeStr
-                        + FIELD_SEPARATOR + statusStr
-                        + FIELD_SEPARATOR + task.getDescription()
-                        + FIELD_SEPARATOR + DateTimeUtil.formatForStorage(deadline.getBy())
-                        + FIELD_SEPARATOR + snoozeStr;
-            case EVENT:
-                Event event = (Event) task;
-                return typeStr
-                        + FIELD_SEPARATOR + statusStr
-                        + FIELD_SEPARATOR + task.getDescription()
-                        + FIELD_SEPARATOR + DateTimeUtil.formatForStorage(event.getFrom())
-                        + TIME_RANGE_SEPARATOR + DateTimeUtil.formatForStorage(event.getTo())
-                        + FIELD_SEPARATOR + snoozeStr;
-            default:
-                return "";
+        case TODO:
+            return typeStr
+                    + FIELD_SEPARATOR + statusStr
+                    + FIELD_SEPARATOR + task.getDescription()
+                    + FIELD_SEPARATOR + snoozeStr;
+        case DEADLINE:
+            Deadline deadline = (Deadline) task;
+            return typeStr
+                    + FIELD_SEPARATOR + statusStr
+                    + FIELD_SEPARATOR + task.getDescription()
+                    + FIELD_SEPARATOR + DateTimeUtil.formatForStorage(deadline.getBy())
+                    + FIELD_SEPARATOR + snoozeStr;
+        case EVENT:
+            Event event = (Event) task;
+            return typeStr
+                    + FIELD_SEPARATOR + statusStr
+                    + FIELD_SEPARATOR + task.getDescription()
+                    + FIELD_SEPARATOR + DateTimeUtil.formatForStorage(event.getFrom())
+                    + TIME_RANGE_SEPARATOR + DateTimeUtil.formatForStorage(event.getTo())
+                    + FIELD_SEPARATOR + snoozeStr;
+        default:
+            return "";
         }
     }
 
-    private Task persistentStringToTask(String data) throws Exception {
+    private Task persistentStringToTask(String data) throws WinnieException {
         assert data != null && !data.trim().isEmpty() : "Data string must not be null or empty";
         String[] parts = data.split(" \\| ");
         if (parts.length < 3) {
-            throw new Exception("Invalid data format");
+            throw new WinnieException("Invalid data format");
         }
 
         String type = parts[0].trim();
@@ -138,45 +139,45 @@ public class Storage {
         Task task = null;
 
         switch (type.toUpperCase()) {
-            case "T":
-                task = new Todo(description);
-                if (parts.length > 3 && !parts[3].trim().isEmpty()) {
-                    LocalDateTime snoozeTime = DateTimeUtil.parseFromStorage(parts[3].trim());
-                    task.snooze(snoozeTime);
-                }
-                break;
-            case "D":
-                if (parts.length < 4) {
-                    throw new Exception("Missing deadline time");
-                }
-                String by = parts[3].trim();
-                LocalDateTime deadlineTime = DateTimeUtil.parseFromStorage(by);
-                task = new Deadline(description, deadlineTime);
-                if (parts.length > 4 && !parts[4].trim().isEmpty()) {
-                    LocalDateTime snoozeTime = DateTimeUtil.parseFromStorage(parts[4].trim());
-                    task.snooze(snoozeTime);
-                }
-                break;
-            case "E":
-                if (parts.length < 4) {
-                    throw new Exception("Missing event time");
-                }
-                String[] timeParts = parts[3].trim().split(TIME_RANGE_SEPARATOR);
-                if (timeParts.length != 2) {
-                    throw new Exception("Invalid event time format");
-                }
-                String from = timeParts[0].trim();
-                String to = timeParts[1].trim();
-                LocalDateTime fromTime = DateTimeUtil.parseFromStorage(from);
-                LocalDateTime toTime = DateTimeUtil.parseFromStorage(to);
-                task = new Event(description, fromTime, toTime);
-                if (parts.length > 4 && !parts[4].trim().isEmpty()) {
-                    LocalDateTime snoozeTime = DateTimeUtil.parseFromStorage(parts[4].trim());
-                    task.snooze(snoozeTime);
-                }
-                break;
-            default:
-                throw new Exception("Unknown task type: " + type);
+        case "T":
+            task = new Todo(description);
+            if (parts.length > 3 && !parts[3].trim().isEmpty()) {
+                LocalDateTime snoozeTime = DateTimeUtil.parseFromStorage(parts[3].trim());
+                task.snooze(snoozeTime);
+            }
+            break;
+        case "D":
+            if (parts.length < 4) {
+                throw new WinnieException("Missing deadline time");
+            }
+            String by = parts[3].trim();
+            LocalDateTime deadlineTime = DateTimeUtil.parseFromStorage(by);
+            task = new Deadline(description, deadlineTime);
+            if (parts.length > 4 && !parts[4].trim().isEmpty()) {
+                LocalDateTime snoozeTime = DateTimeUtil.parseFromStorage(parts[4].trim());
+                task.snooze(snoozeTime);
+            }
+            break;
+        case "E":
+            if (parts.length < 4) {
+                throw new WinnieException("Missing event time");
+            }
+            String[] timeParts = parts[3].trim().split(TIME_RANGE_SEPARATOR);
+            if (timeParts.length != 2) {
+                throw new WinnieException("Invalid event time format");
+            }
+            String from = timeParts[0].trim();
+            String to = timeParts[1].trim();
+            LocalDateTime fromTime = DateTimeUtil.parseFromStorage(from);
+            LocalDateTime toTime = DateTimeUtil.parseFromStorage(to);
+            task = new Event(description, fromTime, toTime);
+            if (parts.length > 4 && !parts[4].trim().isEmpty()) {
+                LocalDateTime snoozeTime = DateTimeUtil.parseFromStorage(parts[4].trim());
+                task.snooze(snoozeTime);
+            }
+            break;
+        default:
+            throw new WinnieException("Unknown task type: " + type);
         }
 
         if (task != null && isDone) {

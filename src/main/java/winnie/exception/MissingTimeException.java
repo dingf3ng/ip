@@ -10,12 +10,12 @@ public class MissingTimeException extends WinnieException {
 
     private static String getFormatHelp(String taskType) {
         switch (taskType) {
-            case "deadline":
-                return "Use: deadline <description> /by <time>";
-            case "event":
-                return "Use: event <description> /from <start> /to <end>";
-            default:
-                return "";
+        case "deadline":
+            return "Use: deadline <description> /by <time>";
+        case "event":
+            return "Use: event <description> /from <start> /to <end>";
+        default:
+            return "";
         }
     }
 }

@@ -7,16 +7,16 @@ import winnie.ui.DialogBox;
 
 public class GuiWriter implements UiWriter {
     private VBox dialogContainer;
-    private Image dukeImage;
+    private Image winnieImage;
 
-    public GuiWriter(VBox dialogContainer, Image dukeImage) {
+    public GuiWriter(VBox dialogContainer, Image winnieImage) {
         this.dialogContainer = dialogContainer;
-        this.dukeImage = dukeImage;
+        this.winnieImage = winnieImage;
     }
 
     @Override
     public void write(Sendable message) {
-        DialogBox winnieDialog = DialogBox.getDukeDialog(message.getMessageContent(), dukeImage);
+        DialogBox winnieDialog = DialogBox.getWinnieDialog(message.getMessageContent(), winnieImage);
         dialogContainer.getChildren().add(winnieDialog);
     }
 }

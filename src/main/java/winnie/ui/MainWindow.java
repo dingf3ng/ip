@@ -9,13 +9,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import winnie.storage.Storage;
 import winnie.tasklist.TaskList;
-import winnie.uitool.GuiReader;
 import winnie.uitool.GuiWriter;
 import winnie.command.Command;
 import winnie.command.VoidCommand;
 import winnie.exception.WinnieException;
 import winnie.parser.Parser;
-import winnie.chatmessage.Readable;
 import winnie.chatmessage.GreetingMessage;
 
 /**
@@ -34,7 +32,6 @@ public class MainWindow extends AnchorPane {
     private TaskList tasks;
     private Storage storage;
     private GuiWriter guiWriter;
-    private GuiReader guiReader;
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
     private Image winnieImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
@@ -50,39 +47,38 @@ public class MainWindow extends AnchorPane {
     public void setData(TaskList tasks, Storage storage) {
         this.tasks = tasks;
         this.storage = storage;
-        
+
         // Initialize GUI components
         this.guiWriter = new GuiWriter(this.dialogContainer, this.winnieImage);
-        this.guiReader = new GuiReader(this.dialogContainer, this.userInput, this.userImage);
-        
+
         // Show welcome message
         guiWriter.write(new GreetingMessage());
     }
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing Winnie's reply and then appends them to
+     * Creates two dialog boxes, one echoing user input and the other containing
+     * Winnie's reply and then appends them to
      * the dialog container. Clears the user input after processing.
      */
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();
-        
+
         // Add user message to dialog
         dialogContainer.getChildren().add(
-                DialogBox.getUserDialog(input, userImage)
-        );
-        
+                DialogBox.getUserDialog(input, userImage));
+
         // Process command
         Command command = parseCommand(input);
         command.execute(tasks, new GuiProxy(), storage);
-        
+
         userInput.clear();
-        
+
         if (command.isExit()) {
             javafx.application.Platform.exit();
         }
     }
-    
+
     private Command parseCommand(String input) {
         try {
             return Parser.parse(input.trim());
@@ -91,7 +87,7 @@ public class MainWindow extends AnchorPane {
         }
         return new VoidCommand();
     }
-    
+
     /**
      * Proxy class to handle UI operations within the command execution
      */
