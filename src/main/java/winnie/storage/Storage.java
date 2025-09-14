@@ -103,9 +103,9 @@ public class Storage {
         String statusStr = task.isDone() ? "1" : "0";
         String typeStr = task.getTaskType()
                 .toString().substring(0, 1);
-        String snoozeStr = task.getSnoozeUntil() != null 
-                ? DateTimeUtil.formatForStorage(task.getSnoozeUntil()) 
-                : "";
+        String snoozeStr = task.getSnoozeUntil() != null
+                ? DateTimeUtil.formatForStorage(task.getSnoozeUntil())
+                : "UNSNOOZED";
 
         switch (task.getTaskType()) {
         case TODO:
@@ -150,7 +150,7 @@ public class Storage {
         switch (type.toUpperCase()) {
         case "T":
             task = new Todo(description);
-            if (parts.length > 3 && !parts[3].trim().isEmpty()) {
+            if (parts.length > 3 && !parts[3].trim().equals("UNSNOOZED")) {
                 LocalDateTime snoozeTime = DateTimeUtil.parseFromStorage(parts[3].trim());
                 task.snooze(snoozeTime);
             }
@@ -162,7 +162,7 @@ public class Storage {
             String by = parts[3].trim();
             LocalDateTime deadlineTime = DateTimeUtil.parseFromStorage(by);
             task = new Deadline(description, deadlineTime);
-            if (parts.length > 4 && !parts[4].trim().isEmpty()) {
+            if (parts.length > 4 && !parts[4].trim().equals("UNSNOOZED")) {
                 LocalDateTime snoozeTime = DateTimeUtil.parseFromStorage(parts[4].trim());
                 task.snooze(snoozeTime);
             }
@@ -180,7 +180,7 @@ public class Storage {
             LocalDateTime fromTime = DateTimeUtil.parseFromStorage(from);
             LocalDateTime toTime = DateTimeUtil.parseFromStorage(to);
             task = new Event(description, fromTime, toTime);
-            if (parts.length > 4 && !parts[4].trim().isEmpty()) {
+            if (parts.length > 4 && !parts[4].trim().equals("UNSNOOZED")) {
                 LocalDateTime snoozeTime = DateTimeUtil.parseFromStorage(parts[4].trim());
                 task.snooze(snoozeTime);
             }

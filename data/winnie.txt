@@ -1,5 +1,3 @@
-T | 1 | read book | 
-E | 0 | meeting | 2024-03-15 10:00 to 2024-03-15 12:00 | 
-T | 1 | sleep | 
-T | 1 | sp | 
-T | 1 | lis | 
+T | 0 | ad | UNSNOOZED
+E | 0 | gala | 2000-10-10 00:00 to 2000-10-11 00:00 | UNSNOOZED
+D | 0 | hw1 | 2020-10-10 00:00 | UNSNOOZED
