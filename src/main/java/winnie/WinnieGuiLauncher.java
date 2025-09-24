@@ -55,6 +55,6 @@ public class WinnieGuiLauncher extends Application {
      */
     public static void main(String[] args) {
         filePath = "./data/winnie.txt";
-        launch(args);
+        Application.launch(WinnieGuiLauncher.class, args);
     }
 }

@@ -49,7 +49,7 @@ public class Gui extends Application implements Ui {
     private Storage storage;
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image winnieImage = new Image(this.getClass().getResourceAsStream("/images/DaWinnie.png"));
+    private Image winnieImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
 
     public Gui() {
         // Initialize later in start method when JavaFX components are created
